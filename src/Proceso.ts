@@ -1,12 +1,13 @@
 import type { IProceso } from "./IProceso.js";
 import { EntidadSimulacion } from "./EntidadSimulacion.js";
+import { EstadoProceso } from "./EstadoProceso.js";
 
 export class Proceso extends EntidadSimulacion implements IProceso {
   pid: number;
   memoriaRequerida: number;
   tiempoTotalCpu: number;
   cpuRestante: number;
-  estado: string;
+  estado: EstadoProceso;
   quantumConsumido: number;
   tiempoBloqueoRestante: number;
 
@@ -33,7 +34,7 @@ export class Proceso extends EntidadSimulacion implements IProceso {
     this.memoriaRequerida = memoriaRequerida;
     this.tiempoTotalCpu = tiempoTotalCpu;
     this.cpuRestante = tiempoTotalCpu;
-    this.estado = "Nuevo";
+    this.estado = EstadoProceso.Nuevo;
     this.quantumConsumido = 0;
     this.tiempoBloqueoRestante = 0;
   }
