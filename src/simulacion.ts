@@ -1,5 +1,6 @@
 import { Proceso } from "./Proceso.js";
 import type { IProceso } from "./IProceso.js";
+import { EstadoProceso } from "./EstadoProceso.js";
 
 export interface BloqueMemoria {
   inicio: number;
@@ -34,7 +35,6 @@ export class Simulacion {
 
     this.memoriaTotal = memoriaTotal;
     this.quantum = quantum;
-
     this.tick = 0;
 
     this.bloques = [
@@ -81,6 +81,53 @@ export class Simulacion {
 
     this.procesos.push(proceso);
     this.colaNuevos.push(pid);
+  }
+
+  admitirProceso(pid: number): void {
+    const proceso = this.procesos.find(
+      (procesoActual) => procesoActual.pid === pid
+    );
+
+    if (!proceso) {
+      throw new Error("El proceso no existe");
+    }
+
+    if (proceso.estado === EstadoProceso.Terminado) {
+      return;
+    }
+
+    const bloqueDisponible = this.bloques.find(
+      (bloque) =>
+        bloque.libre &&
+        bloque.tamanio >= proceso.memoriaRequerida
+    );
+
+    this.colaNuevos = this.colaNuevos.filter(
+      (pidActual) => pidActual !== pid
+    );
+
+    if (!bloqueDisponible) {
+      proceso.estado = EstadoProceso.EsperandoMemoria;
+
+      if (!this.colaEsperandoMemoria.includes(pid)) {
+        this.colaEsperandoMemoria.push(pid);
+      }
+
+      return;
+    }
+
+    bloqueDisponible.libre = false;
+
+    proceso.estado = EstadoProceso.Listo;
+
+    this.colaEsperandoMemoria =
+      this.colaEsperandoMemoria.filter(
+        (pidActual) => pidActual !== pid
+      );
+
+    if (!this.colaListos.includes(pid)) {
+      this.colaListos.push(pid);
+    }
   }
 
   consultarProcesos(): IProceso[] {
