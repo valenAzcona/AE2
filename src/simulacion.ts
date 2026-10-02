@@ -1,3 +1,6 @@
+import { Proceso } from "./Proceso.js";
+import type { IProceso } from "./IProceso.js";
+
 export interface BloqueMemoria {
   inicio: number;
   tamanio: number;
@@ -17,6 +20,8 @@ export class Simulacion {
   colaBloqueados: number[];
 
   procesosTerminados: number;
+
+  private procesos: Proceso[];
 
   constructor(memoriaTotal: number, quantum: number) {
     if (!Number.isInteger(memoriaTotal) || memoriaTotal <= 0) {
@@ -46,5 +51,48 @@ export class Simulacion {
     this.colaBloqueados = [];
 
     this.procesosTerminados = 0;
+    this.procesos = [];
+  }
+
+  registrarProceso(
+    pid: number,
+    memoriaRequerida: number,
+    tiempoTotalCpu: number
+  ): void {
+    const pidDuplicado = this.procesos.some(
+      (proceso) => proceso.pid === pid
+    );
+
+    if (pidDuplicado) {
+      throw new Error("Ya existe un proceso con ese PID");
+    }
+
+    if (memoriaRequerida > this.memoriaTotal) {
+      throw new Error(
+        "La memoria requerida no puede superar la memoria total"
+      );
+    }
+
+    const proceso = new Proceso(
+      pid,
+      memoriaRequerida,
+      tiempoTotalCpu
+    );
+
+    this.procesos.push(proceso);
+    this.colaNuevos.push(pid);
+  }
+
+  consultarProcesos(): IProceso[] {
+    return this.procesos.map((proceso) => ({
+      pid: proceso.pid,
+      memoriaRequerida: proceso.memoriaRequerida,
+      tiempoTotalCpu: proceso.tiempoTotalCpu,
+      cpuRestante: proceso.cpuRestante,
+      estado: proceso.estado,
+      quantumConsumido: proceso.quantumConsumido,
+      tiempoBloqueoRestante: proceso.tiempoBloqueoRestante,
+      obtenerResumen: () => proceso.obtenerResumen(),
+    }));
   }
 }
