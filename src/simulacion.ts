@@ -117,7 +117,6 @@ export class Simulacion {
     }
 
     bloqueDisponible.libre = false;
-
     proceso.estado = EstadoProceso.Listo;
 
     this.colaEsperandoMemoria =
@@ -128,6 +127,19 @@ export class Simulacion {
     if (!this.colaListos.includes(pid)) {
       this.colaListos.push(pid);
     }
+  }
+
+  reintentarProcesosEnEspera(): void {
+    const procesosEnEspera = [...this.colaEsperandoMemoria];
+
+    for (const pid of procesosEnEspera) {
+      this.admitirProceso(pid);
+    }
+  }
+
+  avanzarTick(): void {
+    this.reintentarProcesosEnEspera();
+    this.tick++;
   }
 
   consultarProcesos(): IProceso[] {
