@@ -1,5 +1,6 @@
 import { Proceso } from "./Proceso.js";
 import type { IProceso } from "./IProceso.js";
+import type { ISimulacion } from "./ISimulacion.js";
 import { EstadoProceso } from "./EstadoProceso.js";
 
 export interface BloqueMemoria {
@@ -8,7 +9,7 @@ export interface BloqueMemoria {
   libre: boolean;
 }
 
-export class Simulacion {
+export class Simulacion implements ISimulacion {
   readonly memoriaTotal: number;
   readonly quantum: number;
 
