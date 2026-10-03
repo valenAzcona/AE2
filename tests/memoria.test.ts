@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Memoria } from "../src/Memoria.js";
+import { PoliticaAsignacion } from "../src/PoliticaAsignacion.js";
 
 describe("RF04 - Asignar memoria contigua", () => {
   it("asigna usando First-Fit y divide el bloque si sobra espacio", () => {
@@ -92,95 +93,206 @@ describe("RF04 - Asignar memoria contigua", () => {
     expect(asignado).toBe(false);
     expect(despues).toEqual(antes);
   });
+
   it("fusiona con el bloque libre de la derecha", () => {
-  const memoria = new Memoria(500);
+    const memoria = new Memoria(500);
 
-  memoria.asignar(1, 100);
-  memoria.asignar(2, 100);
+    memoria.asignar(1, 100);
+    memoria.asignar(2, 100);
 
-  memoria.liberar(2);
+    memoria.liberar(2);
 
-  const bloques = memoria.obtenerBloques();
+    const bloques = memoria.obtenerBloques();
 
-  expect(bloques).toHaveLength(2);
+    expect(bloques).toHaveLength(2);
 
-  expect(bloques[1]).toMatchObject({
-    inicio: 100,
-    tamanio: 400,
-    libre: true,
-    pidProceso: null,
-  });
-});
-
-it("fusiona con el bloque libre de la izquierda", () => {
-  const memoria = new Memoria(500);
-
-  memoria.asignar(1, 100);
-  memoria.asignar(2, 100);
-  memoria.asignar(3, 100);
-
-  memoria.liberar(1);
-  memoria.liberar(2);
-
-  const bloques = memoria.obtenerBloques();
-
-  expect(bloques[0]).toMatchObject({
-    inicio: 0,
-    tamanio: 200,
-    libre: true,
-    pidProceso: null,
-  });
-});
-
-it("fusiona bloques libres de ambos lados", () => {
-  const memoria = new Memoria(400);
-
-  memoria.asignar(1, 100);
-  memoria.asignar(2, 100);
-  memoria.asignar(3, 100);
-  memoria.asignar(4, 100);
-
-  memoria.liberar(1);
-  memoria.liberar(3);
-  memoria.liberar(2);
-
-  const bloques = memoria.obtenerBloques();
-
-  expect(bloques[0]).toMatchObject({
-    inicio: 0,
-    tamanio: 300,
-    libre: true,
-    pidProceso: null,
+    expect(bloques[1]).toMatchObject({
+      inicio: 100,
+      tamanio: 400,
+      libre: true,
+      pidProceso: null,
+    });
   });
 
-  expect(bloques[1]).toMatchObject({
-    inicio: 300,
-    tamanio: 100,
-    libre: false,
-    pidProceso: 4,
+  it("fusiona con el bloque libre de la izquierda", () => {
+    const memoria = new Memoria(500);
+
+    memoria.asignar(1, 100);
+    memoria.asignar(2, 100);
+    memoria.asignar(3, 100);
+
+    memoria.liberar(1);
+    memoria.liberar(2);
+
+    const bloques = memoria.obtenerBloques();
+
+    expect(bloques[0]).toMatchObject({
+      inicio: 0,
+      tamanio: 200,
+      libre: true,
+      pidProceso: null,
+    });
   });
-});
 
-it("al liberar todos los procesos vuelve a existir un unico bloque libre", () => {
-  const memoria = new Memoria(500);
+  it("fusiona bloques libres de ambos lados", () => {
+    const memoria = new Memoria(400);
 
-  memoria.asignar(1, 100);
-  memoria.asignar(2, 150);
-  memoria.asignar(3, 250);
+    memoria.asignar(1, 100);
+    memoria.asignar(2, 100);
+    memoria.asignar(3, 100);
+    memoria.asignar(4, 100);
 
-  memoria.liberar(2);
-  memoria.liberar(1);
-  memoria.liberar(3);
+    memoria.liberar(1);
+    memoria.liberar(3);
+    memoria.liberar(2);
 
-  const bloques = memoria.obtenerBloques();
+    const bloques = memoria.obtenerBloques();
 
-  expect(bloques).toHaveLength(1);
+    expect(bloques[0]).toMatchObject({
+      inicio: 0,
+      tamanio: 300,
+      libre: true,
+      pidProceso: null,
+    });
 
-  expect(bloques[0]).toMatchObject({
-    inicio: 0,
-    tamanio: 500,
-    libre: true,
-    pidProceso: null,
+    expect(bloques[1]).toMatchObject({
+      inicio: 300,
+      tamanio: 100,
+      libre: false,
+      pidProceso: 4,
+    });
   });
- });
+
+  it("al liberar todos los procesos vuelve a existir un unico bloque libre", () => {
+    const memoria = new Memoria(500);
+
+    memoria.asignar(1, 100);
+    memoria.asignar(2, 150);
+    memoria.asignar(3, 250);
+
+    memoria.liberar(2);
+    memoria.liberar(1);
+    memoria.liberar(3);
+
+    const bloques = memoria.obtenerBloques();
+
+    expect(bloques).toHaveLength(1);
+
+    expect(bloques[0]).toMatchObject({
+      inicio: 0,
+      tamanio: 500,
+      libre: true,
+      pidProceso: null,
+    });
+  });
+
+  it("Best-Fit elige el bloque libre mas pequeno que alcanza", () => {
+    const memoria = new Memoria(
+      1000,
+      PoliticaAsignacion.BestFit
+    );
+
+    memoria.asignar(1, 200);
+    memoria.asignar(2, 300);
+    memoria.asignar(3, 100);
+
+    memoria.liberar(1);
+    memoria.liberar(3);
+
+    const asignado = memoria.asignar(4, 150);
+
+    expect(asignado).toBe(true);
+
+    const bloques = memoria.obtenerBloques();
+
+    const bloqueProceso4 = bloques.find(
+      (bloque) => bloque.pidProceso === 4
+    );
+
+    expect(bloqueProceso4?.inicio).toBe(0);
+    expect(bloqueProceso4?.tamanio).toBe(150);
+  });
+
+  it("Worst-Fit elige el bloque libre mas grande", () => {
+    const memoria = new Memoria(
+      1000,
+      PoliticaAsignacion.WorstFit
+    );
+
+    memoria.asignar(1, 200);
+    memoria.asignar(2, 300);
+    memoria.asignar(3, 100);
+
+    memoria.liberar(1);
+    memoria.liberar(3);
+
+    const asignado = memoria.asignar(4, 150);
+
+    expect(asignado).toBe(true);
+
+    const bloques = memoria.obtenerBloques();
+
+    const bloqueProceso4 = bloques.find(
+      (bloque) => bloque.pidProceso === 4
+    );
+
+    expect(bloqueProceso4?.inicio).toBe(500);
+    expect(bloqueProceso4?.tamanio).toBe(150);
+  });
+
+  it("en empate Best-Fit conserva el bloque de menor direccion", () => {
+    const memoria = new Memoria(
+      500,
+      PoliticaAsignacion.BestFit
+    );
+
+    memoria.asignar(1, 100);
+    memoria.asignar(2, 100);
+    memoria.asignar(3, 100);
+    memoria.asignar(4, 100);
+    memoria.asignar(5, 100);
+
+    memoria.liberar(1);
+    memoria.liberar(3);
+
+    const asignado = memoria.asignar(6, 80);
+
+    expect(asignado).toBe(true);
+
+    const bloques = memoria.obtenerBloques();
+
+    const bloqueProceso6 = bloques.find(
+      (bloque) => bloque.pidProceso === 6
+    );
+
+    expect(bloqueProceso6?.inicio).toBe(0);
+  });
+
+  it("en empate Worst-Fit conserva el bloque de menor direccion", () => {
+    const memoria = new Memoria(
+      500,
+      PoliticaAsignacion.WorstFit
+    );
+
+    memoria.asignar(1, 100);
+    memoria.asignar(2, 100);
+    memoria.asignar(3, 100);
+    memoria.asignar(4, 100);
+    memoria.asignar(5, 100);
+
+    memoria.liberar(1);
+    memoria.liberar(3);
+
+    const asignado = memoria.asignar(6, 80);
+
+    expect(asignado).toBe(true);
+
+    const bloques = memoria.obtenerBloques();
+
+    const bloqueProceso6 = bloques.find(
+      (bloque) => bloque.pidProceso === 6
+    );
+
+    expect(bloqueProceso6?.inicio).toBe(0);
+  });
 });

@@ -1,13 +1,18 @@
 import type { IMemoria } from "./IMemoria.js";
 import type { IBloqueMemoria } from "./IBloqueMemoria.js";
 import { BloqueMemoria } from "./BloqueMemoria.js";
+import { PoliticaAsignacion } from "./PoliticaAsignacion.js";
 
 export class Memoria implements IMemoria {
   readonly tamanioTotal: number;
+  readonly politicaAsignacion: PoliticaAsignacion;
 
   private bloques: BloqueMemoria[];
 
-  constructor(tamanioTotal: number) {
+  constructor(
+    tamanioTotal: number,
+    politicaAsignacion: PoliticaAsignacion = PoliticaAsignacion.FirstFit
+  ) {
     if (!Number.isInteger(tamanioTotal) || tamanioTotal <= 0) {
       throw new Error(
         "El tamaño total de memoria debe ser un entero positivo"
@@ -15,6 +20,7 @@ export class Memoria implements IMemoria {
     }
 
     this.tamanioTotal = tamanioTotal;
+    this.politicaAsignacion = politicaAsignacion;
 
     this.bloques = [
       new BloqueMemoria(0, tamanioTotal)
@@ -35,11 +41,7 @@ export class Memoria implements IMemoria {
     pid: number,
     tamanio: number
   ): boolean {
-    const indice = this.bloques.findIndex(
-      (bloque) =>
-        bloque.libre &&
-        bloque.tamanio >= tamanio
-    );
+    const indice = this.buscarBloque(tamanio);
 
     if (indice === -1) {
       return false;
@@ -101,6 +103,45 @@ export class Memoria implements IMemoria {
     );
 
     this.fusionarBloquesLibres();
+  }
+
+  private buscarBloque(tamanio: number): number {
+    let indiceElegido = -1;
+
+    for (let i = 0; i < this.bloques.length; i++) {
+      const bloque = this.bloques[i]!;
+
+      if (!bloque.libre || bloque.tamanio < tamanio) {
+        continue;
+      }
+
+      if (this.politicaAsignacion === PoliticaAsignacion.FirstFit) {
+        return i;
+      }
+
+      if (indiceElegido === -1) {
+        indiceElegido = i;
+        continue;
+      }
+
+      const bloqueElegido = this.bloques[indiceElegido]!;
+
+      if (
+        this.politicaAsignacion === PoliticaAsignacion.BestFit &&
+        bloque.tamanio < bloqueElegido.tamanio
+      ) {
+        indiceElegido = i;
+      }
+
+      if (
+        this.politicaAsignacion === PoliticaAsignacion.WorstFit &&
+        bloque.tamanio > bloqueElegido.tamanio
+      ) {
+        indiceElegido = i;
+      }
+    }
+
+    return indiceElegido;
   }
 
   private fusionarBloquesLibres(): void {
