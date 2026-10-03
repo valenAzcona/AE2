@@ -1,45 +1,104 @@
 import type { IProceso } from "./IProceso.js";
-import { EntidadSimulacion } from "./EntidadSimulacion.js";
 import { EstadoProceso } from "./EstadoProceso.js";
 
-export class Proceso extends EntidadSimulacion implements IProceso {
-  pid: number;
-  memoriaRequerida: number;
-  tiempoTotalCpu: number;
-  cpuRestante: number;
-  estado: EstadoProceso;
-  quantumConsumido: number;
-  tiempoBloqueoRestante: number;
+export class Proceso implements IProceso {
+  private readonly _pid: number;
+  private readonly _memoriaRequerida: number;
+  private readonly _tiempoTotalCpu: number;
+
+  private _cpuRestante: number;
+  private _estado: EstadoProceso;
+  private _quantumConsumido: number;
+  private _tiempoBloqueoRestante: number;
 
   constructor(
     pid: number,
     memoriaRequerida: number,
     tiempoTotalCpu: number
   ) {
-    super();
-
     if (!Number.isInteger(pid) || pid <= 0) {
-      throw new Error("El PID debe ser un entero positivo");
+      throw new Error(
+        "El PID debe ser un entero positivo"
+      );
     }
 
-    if (!Number.isInteger(memoriaRequerida) || memoriaRequerida <= 0) {
-      throw new Error("La memoria requerida debe ser un entero positivo");
+    if (
+      !Number.isInteger(memoriaRequerida) ||
+      memoriaRequerida <= 0
+    ) {
+      throw new Error(
+        "La memoria requerida debe ser un entero positivo"
+      );
     }
 
-    if (!Number.isInteger(tiempoTotalCpu) || tiempoTotalCpu <= 0) {
-      throw new Error("El tiempo total de CPU debe ser un entero positivo");
+    if (
+      !Number.isInteger(tiempoTotalCpu) ||
+      tiempoTotalCpu <= 0
+    ) {
+      throw new Error(
+        "El tiempo total de CPU debe ser un entero positivo"
+      );
     }
 
-    this.pid = pid;
-    this.memoriaRequerida = memoriaRequerida;
-    this.tiempoTotalCpu = tiempoTotalCpu;
-    this.cpuRestante = tiempoTotalCpu;
-    this.estado = EstadoProceso.Nuevo;
-    this.quantumConsumido = 0;
-    this.tiempoBloqueoRestante = 0;
+    this._pid = pid;
+    this._memoriaRequerida = memoriaRequerida;
+    this._tiempoTotalCpu = tiempoTotalCpu;
+
+    this._cpuRestante = tiempoTotalCpu;
+    this._estado = EstadoProceso.Nuevo;
+    this._quantumConsumido = 0;
+    this._tiempoBloqueoRestante = 0;
   }
 
-  override obtenerResumen(): string {
-    return `PID ${this.pid} - Estado: ${this.estado} - CPU restante: ${this.cpuRestante}`;
+  get pid(): number {
+    return this._pid;
+  }
+
+  get memoriaRequerida(): number {
+    return this._memoriaRequerida;
+  }
+
+  get tiempoTotalCpu(): number {
+    return this._tiempoTotalCpu;
+  }
+
+  get cpuRestante(): number {
+    return this._cpuRestante;
+  }
+
+  get estado(): EstadoProceso {
+    return this._estado;
+  }
+
+  get quantumConsumido(): number {
+    return this._quantumConsumido;
+  }
+
+  get tiempoBloqueoRestante(): number {
+    return this._tiempoBloqueoRestante;
+  }
+
+  marcarEsperandoMemoria(): void {
+    if (this._estado === EstadoProceso.Terminado) {
+      return;
+    }
+
+    this._estado = EstadoProceso.EsperandoMemoria;
+  }
+
+  marcarListo(): void {
+    if (this._estado === EstadoProceso.Terminado) {
+      return;
+    }
+
+    this._estado = EstadoProceso.Listo;
+  }
+
+  marcarTerminado(): void {
+    this._estado = EstadoProceso.Terminado;
+  }
+
+  obtenerResumen(): string {
+    return `PID ${this._pid} - Estado: ${this._estado} - CPU restante: ${this._cpuRestante}`;
   }
 }

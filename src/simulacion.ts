@@ -116,7 +116,7 @@ export class Simulacion implements ISimulacion {
     );
 
     if (!asignado) {
-      proceso.estado = EstadoProceso.EsperandoMemoria;
+      proceso.marcarEsperandoMemoria();
 
       if (!this.colaEsperandoMemoria.includes(pid)) {
         this.colaEsperandoMemoria.push(pid);
@@ -125,7 +125,7 @@ export class Simulacion implements ISimulacion {
       return;
     }
 
-    proceso.estado = EstadoProceso.Listo;
+    proceso.marcarListo();
 
     this.colaEsperandoMemoria =
       this.colaEsperandoMemoria.filter(
@@ -166,6 +166,16 @@ export class Simulacion implements ISimulacion {
       quantumConsumido: proceso.quantumConsumido,
       tiempoBloqueoRestante:
         proceso.tiempoBloqueoRestante,
+
+      marcarEsperandoMemoria: () =>
+        proceso.marcarEsperandoMemoria(),
+
+      marcarListo: () =>
+        proceso.marcarListo(),
+
+      marcarTerminado: () =>
+        proceso.marcarTerminado(),
+
       obtenerResumen: () =>
         proceso.obtenerResumen(),
     }));

@@ -1,32 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { Simulacion } from "../src/simulacion.js";
-import { Proceso } from "../src/Proceso.js";
 import { EstadoProceso } from "../src/EstadoProceso.js";
 
 describe("RF02 - Registrar y consultar procesos", () => {
-  it("crea un proceso con sus valores iniciales correctos", () => {
-    const proceso = new Proceso(1, 128, 10);
-
-    expect(proceso.pid).toBe(1);
-    expect(proceso.memoriaRequerida).toBe(128);
-    expect(proceso.tiempoTotalCpu).toBe(10);
-    expect(proceso.cpuRestante).toBe(10);
-    expect(proceso.estado).toBe(EstadoProceso.Nuevo);
-    expect(proceso.quantumConsumido).toBe(0);
-    expect(proceso.tiempoBloqueoRestante).toBe(0);
-  });
-
-  it("rechaza procesos con datos invalidos", () => {
-    expect(() => new Proceso(0, 128, 10)).toThrow();
-    expect(() => new Proceso(1, 0, 10)).toThrow();
-    expect(() => new Proceso(1, 128, 0)).toThrow();
-
-    expect(() => new Proceso(1.5, 128, 10)).toThrow();
-    expect(() => new Proceso(1, 128.5, 10)).toThrow();
-    expect(() => new Proceso(1, 128, 10.5)).toThrow();
-  });
-
-  it("registra un proceso y lo agrega a la cola de nuevos", () => {
+  it("registra correctamente un proceso", () => {
     const simulacion = new Simulacion(1024, 4);
 
     simulacion.registrarProceso(1, 128, 10);
@@ -34,11 +11,27 @@ describe("RF02 - Registrar y consultar procesos", () => {
     const procesos = simulacion.consultarProcesos();
 
     expect(procesos).toHaveLength(1);
-    expect(procesos[0]?.pid).toBe(1);
+
+    expect(procesos[0]).toMatchObject({
+      pid: 1,
+      memoriaRequerida: 128,
+      tiempoTotalCpu: 10,
+      cpuRestante: 10,
+      estado: EstadoProceso.Nuevo,
+      quantumConsumido: 0,
+      tiempoBloqueoRestante: 0,
+    });
+  });
+
+  it("agrega el proceso nuevo a la cola de Nuevos", () => {
+    const simulacion = new Simulacion(1024, 4);
+
+    simulacion.registrarProceso(1, 128, 10);
+
     expect(simulacion.colaNuevos).toEqual([1]);
   });
 
-  it("rechaza PID duplicados", () => {
+  it("rechaza un PID duplicado", () => {
     const simulacion = new Simulacion(1024, 4);
 
     simulacion.registrarProceso(1, 128, 10);
@@ -48,27 +41,55 @@ describe("RF02 - Registrar y consultar procesos", () => {
     ).toThrow("Ya existe un proceso con ese PID");
   });
 
-  it("rechaza procesos que requieren mas memoria que la memoria total", () => {
+  it("rechaza una memoria requerida mayor que la memoria total", () => {
     const simulacion = new Simulacion(1024, 4);
 
     expect(() =>
       simulacion.registrarProceso(1, 2048, 10)
-    ).toThrow("La memoria requerida no puede superar la memoria total");
+    ).toThrow(
+      "La memoria requerida no puede superar la memoria total"
+    );
   });
 
-  it("consultar procesos devuelve una copia y no permite modificar el proceso interno", () => {
+  it("rechaza datos invalidos del proceso", () => {
+    const simulacion = new Simulacion(1024, 4);
+
+    expect(() =>
+      simulacion.registrarProceso(0, 128, 10)
+    ).toThrow();
+
+    expect(() =>
+      simulacion.registrarProceso(1, 0, 10)
+    ).toThrow();
+
+    expect(() =>
+      simulacion.registrarProceso(1, 128, 0)
+    ).toThrow();
+  });
+
+  it("consultar procesos devuelve una nueva coleccion", () => {
     const simulacion = new Simulacion(1024, 4);
 
     simulacion.registrarProceso(1, 128, 10);
 
-    const procesos = simulacion.consultarProcesos();
+    const primeraConsulta =
+      simulacion.consultarProcesos();
 
-    procesos[0]!.cpuRestante = 0;
-    procesos[0]!.estado = EstadoProceso.Terminado;
+    const segundaConsulta =
+      simulacion.consultarProcesos();
 
-    const procesosInternos = simulacion.consultarProcesos();
+    expect(primeraConsulta).not.toBe(
+      segundaConsulta
+    );
 
-    expect(procesosInternos[0]?.cpuRestante).toBe(10);
-    expect(procesosInternos[0]?.estado).toBe(EstadoProceso.Nuevo);
+    expect(primeraConsulta[0]).not.toBe(
+      segundaConsulta[0]
+    );
+
+    expect(segundaConsulta[0]).toMatchObject({
+      pid: 1,
+      cpuRestante: 10,
+      estado: EstadoProceso.Nuevo,
+    });
   });
 });

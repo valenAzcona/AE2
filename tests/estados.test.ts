@@ -74,4 +74,55 @@ describe("RF03 - Gestionar estados y admision", () => {
 
     expect(simulacion.colaListos).toEqual([1]);
   });
+
+  it("salta un proceso que no entra y admite al siguiente que si entra", () => {
+    const simulacion = new Simulacion(500, 4);
+
+    simulacion.registrarProceso(1, 200, 10);
+    simulacion.registrarProceso(2, 200, 10);
+    simulacion.registrarProceso(3, 100, 10);
+
+    simulacion.admitirProceso(1);
+    simulacion.admitirProceso(2);
+    simulacion.admitirProceso(3);
+
+    simulacion.registrarProceso(4, 150, 10);
+    simulacion.registrarProceso(5, 80, 10);
+
+    simulacion.admitirProceso(4);
+    simulacion.admitirProceso(5);
+
+    expect(simulacion.colaEsperandoMemoria).toEqual([
+      4,
+      5,
+    ]);
+
+    simulacion.liberarMemoria(3);
+
+    simulacion.reintentarProcesosEnEspera();
+
+    const procesos = simulacion.consultarProcesos();
+
+    const proceso4 = procesos.find(
+      (proceso) => proceso.pid === 4
+    );
+
+    const proceso5 = procesos.find(
+      (proceso) => proceso.pid === 5
+    );
+
+    expect(proceso4?.estado).toBe(
+      EstadoProceso.EsperandoMemoria
+    );
+
+    expect(proceso5?.estado).toBe(
+      EstadoProceso.Listo
+    );
+
+    expect(simulacion.colaEsperandoMemoria).toEqual([
+      4,
+    ]);
+
+    expect(simulacion.colaListos).toContain(5);
+  });
 });
