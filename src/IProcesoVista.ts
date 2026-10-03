@@ -1,6 +1,6 @@
 import type { EstadoProceso } from "./EstadoProceso.js";
 
-export interface IProceso {
+export interface IProcesoVista {
   readonly pid: number;
   readonly memoriaRequerida: number;
   readonly tiempoTotalCpu: number;
@@ -8,10 +8,4 @@ export interface IProceso {
   readonly estado: EstadoProceso;
   readonly quantumConsumido: number;
   readonly tiempoBloqueoRestante: number;
-
-  marcarEsperandoMemoria(): void;
-  marcarListo(): void;
-  marcarTerminado(): void;
-
-  obtenerResumen(): string;
 }

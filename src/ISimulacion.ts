@@ -1,4 +1,4 @@
-import type { IProceso } from "./IProceso.js";
+import type { IProcesoVista } from "./IProcesoVista.js";
 import type { IBloqueMemoria } from "./IBloqueMemoria.js";
 import type { PoliticaAsignacion } from "./PoliticaAsignacion.js";
 
@@ -23,7 +23,7 @@ export interface ISimulacion {
 
   avanzarTick(): void;
 
-  consultarProcesos(): IProceso[];
+  consultarProcesos(): IProcesoVista[];
 
   consultarMemoria(): IBloqueMemoria[];
 }

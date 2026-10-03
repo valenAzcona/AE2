@@ -1,5 +1,5 @@
 import { Proceso } from "./Proceso.js";
-import type { IProceso } from "./IProceso.js";
+import type { IProcesoVista } from "./IProcesoVista.js";
 import type { ISimulacion } from "./ISimulacion.js";
 import type { IBloqueMemoria } from "./IBloqueMemoria.js";
 import { EstadoProceso } from "./EstadoProceso.js";
@@ -156,7 +156,7 @@ export class Simulacion implements ISimulacion {
     this.tick++;
   }
 
-  consultarProcesos(): IProceso[] {
+  consultarProcesos(): IProcesoVista[] {
     return this.procesos.map((proceso) => ({
       pid: proceso.pid,
       memoriaRequerida: proceso.memoriaRequerida,
@@ -166,18 +166,6 @@ export class Simulacion implements ISimulacion {
       quantumConsumido: proceso.quantumConsumido,
       tiempoBloqueoRestante:
         proceso.tiempoBloqueoRestante,
-
-      marcarEsperandoMemoria: () =>
-        proceso.marcarEsperandoMemoria(),
-
-      marcarListo: () =>
-        proceso.marcarListo(),
-
-      marcarTerminado: () =>
-        proceso.marcarTerminado(),
-
-      obtenerResumen: () =>
-        proceso.obtenerResumen(),
     }));
   }
 
