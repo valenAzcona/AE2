@@ -15,6 +15,7 @@ describe("RF01 - Configurar e iniciar la simulacion", () => {
         tamanio: 1024,
         libre: true,
         pidProceso: null,
+        obtenerFin: expect.any(Function),
       },
     ]);
 

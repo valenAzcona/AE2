@@ -1,9 +1,4 @@
-export interface IBloqueMemoria {
-  inicio: number;
-  tamanio: number;
-  libre: boolean;
-  pidProceso: number | null;
-}
+import type { IBloqueMemoria } from "./IBloqueMemoria.js";
 
 export interface IMemoria {
   readonly tamanioTotal: number;

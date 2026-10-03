@@ -1,5 +1,5 @@
 import type { IProceso } from "./IProceso.js";
-import type { IBloqueMemoria } from "./IMemoria.js";
+import type { IBloqueMemoria } from "./IBloqueMemoria.js";
 
 export interface ISimulacion {
   readonly memoriaTotal: number;

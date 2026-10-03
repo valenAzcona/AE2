@@ -16,11 +16,11 @@ describe("RF03 - Gestionar estados y admision", () => {
     expect(simulacion.colaListos).toEqual([1]);
   });
 
-  it("deja un proceso Esperando Memoria cuando no hay bloque disponible", () => {
-    const simulacion = new Simulacion(1024, 4);
+  it("deja un proceso Esperando Memoria cuando no hay bloque suficiente", () => {
+    const simulacion = new Simulacion(300, 4);
 
-    simulacion.registrarProceso(1, 128, 10);
-    simulacion.registrarProceso(2, 256, 10);
+    simulacion.registrarProceso(1, 200, 10);
+    simulacion.registrarProceso(2, 150, 10);
 
     simulacion.admitirProceso(1);
     simulacion.admitirProceso(2);
@@ -39,10 +39,10 @@ describe("RF03 - Gestionar estados y admision", () => {
   });
 
   it("admite un proceso en espera cuando se libera memoria", () => {
-    const simulacion = new Simulacion(1024, 4);
+    const simulacion = new Simulacion(300, 4);
 
-    simulacion.registrarProceso(1, 128, 10);
-    simulacion.registrarProceso(2, 256, 10);
+    simulacion.registrarProceso(1, 200, 10);
+    simulacion.registrarProceso(2, 150, 10);
 
     simulacion.admitirProceso(1);
     simulacion.admitirProceso(2);
@@ -62,18 +62,16 @@ describe("RF03 - Gestionar estados y admision", () => {
     expect(simulacion.tick).toBe(1);
   });
 
-  it("un proceso Terminado no vuelve a las colas", () => {
+  it("no duplica un proceso en la cola de Listos", () => {
     const simulacion = new Simulacion(1024, 4);
 
     simulacion.registrarProceso(1, 128, 10);
     simulacion.admitirProceso(1);
 
-    const procesos = simulacion.consultarProcesos();
+    expect(simulacion.colaListos).toEqual([1]);
 
-    expect(procesos[0]?.estado).toBe(
-      EstadoProceso.Listo
-    );
+    simulacion.admitirProceso(1);
 
-    expect(simulacion.colaListos).toContain(1);
+    expect(simulacion.colaListos).toEqual([1]);
   });
 });

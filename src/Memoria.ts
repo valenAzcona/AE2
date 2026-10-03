@@ -1,12 +1,11 @@
-import type {
-  IBloqueMemoria,
-  IMemoria
-} from "./IMemoria.js";
+import type { IMemoria } from "./IMemoria.js";
+import type { IBloqueMemoria } from "./IBloqueMemoria.js";
+import { BloqueMemoria } from "./BloqueMemoria.js";
 
 export class Memoria implements IMemoria {
   readonly tamanioTotal: number;
 
-  private bloques: IBloqueMemoria[];
+  private bloques: BloqueMemoria[];
 
   constructor(tamanioTotal: number) {
     if (!Number.isInteger(tamanioTotal) || tamanioTotal <= 0) {
@@ -18,18 +17,17 @@ export class Memoria implements IMemoria {
     this.tamanioTotal = tamanioTotal;
 
     this.bloques = [
-      {
-        inicio: 0,
-        tamanio: tamanioTotal,
-        libre: true,
-        pidProceso: null,
-      },
+      new BloqueMemoria(0, tamanioTotal)
     ];
   }
 
   obtenerBloques(): IBloqueMemoria[] {
     return this.bloques.map((bloque) => ({
-      ...bloque,
+      inicio: bloque.inicio,
+      tamanio: bloque.tamanio,
+      libre: bloque.libre,
+      pidProceso: bloque.pidProceso,
+      obtenerFin: () => bloque.obtenerFin(),
     }));
   }
 
@@ -37,33 +35,69 @@ export class Memoria implements IMemoria {
     pid: number,
     tamanio: number
   ): boolean {
-    const bloqueDisponible = this.bloques.find(
+    const indice = this.bloques.findIndex(
       (bloque) =>
         bloque.libre &&
         bloque.tamanio >= tamanio
     );
 
-    if (!bloqueDisponible) {
+    if (indice === -1) {
       return false;
     }
 
-    bloqueDisponible.libre = false;
-    bloqueDisponible.pidProceso = pid;
+    const bloque = this.bloques[indice]!;
+
+    if (bloque.tamanio === tamanio) {
+      this.bloques[indice] = new BloqueMemoria(
+        bloque.inicio,
+        tamanio,
+        false,
+        pid
+      );
+
+      return true;
+    }
+
+    const bloqueOcupado = new BloqueMemoria(
+      bloque.inicio,
+      tamanio,
+      false,
+      pid
+    );
+
+    const bloqueLibre = new BloqueMemoria(
+      bloque.inicio + tamanio,
+      bloque.tamanio - tamanio,
+      true,
+      null
+    );
+
+    this.bloques.splice(
+      indice,
+      1,
+      bloqueOcupado,
+      bloqueLibre
+    );
 
     return true;
   }
 
   liberar(pid: number): void {
-    const bloque = this.bloques.find(
-      (bloqueActual) =>
-        bloqueActual.pidProceso === pid
+    const indice = this.bloques.findIndex(
+      (bloque) => bloque.pidProceso === pid
     );
 
-    if (!bloque) {
+    if (indice === -1) {
       return;
     }
 
-    bloque.libre = true;
-    bloque.pidProceso = null;
+    const bloque = this.bloques[indice]!;
+
+    this.bloques[indice] = new BloqueMemoria(
+      bloque.inicio,
+      bloque.tamanio,
+      true,
+      null
+    );
   }
 }
