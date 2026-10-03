@@ -1,9 +1,11 @@
 import type { IProceso } from "./IProceso.js";
 import type { IBloqueMemoria } from "./IBloqueMemoria.js";
+import type { PoliticaAsignacion } from "./PoliticaAsignacion.js";
 
 export interface ISimulacion {
   readonly memoriaTotal: number;
   readonly quantum: number;
+  readonly politicaAsignacion: PoliticaAsignacion;
 
   tick: number;
 

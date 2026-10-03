@@ -1,12 +1,15 @@
 import { Proceso } from "./Proceso.js";
 import type { IProceso } from "./IProceso.js";
 import type { ISimulacion } from "./ISimulacion.js";
+import type { IBloqueMemoria } from "./IBloqueMemoria.js";
 import { EstadoProceso } from "./EstadoProceso.js";
 import { Memoria } from "./Memoria.js";
+import { PoliticaAsignacion } from "./PoliticaAsignacion.js";
 
 export class Simulacion implements ISimulacion {
   readonly memoriaTotal: number;
   readonly quantum: number;
+  readonly politicaAsignacion: PoliticaAsignacion;
 
   tick: number;
 
@@ -20,20 +23,33 @@ export class Simulacion implements ISimulacion {
   private procesos: Proceso[];
   private memoria: Memoria;
 
-  constructor(memoriaTotal: number, quantum: number) {
+  constructor(
+    memoriaTotal: number,
+    quantum: number,
+    politicaAsignacion: PoliticaAsignacion = PoliticaAsignacion.FirstFit
+  ) {
     if (!Number.isInteger(memoriaTotal) || memoriaTotal <= 0) {
-      throw new Error("La memoria total debe ser un entero positivo");
+      throw new Error(
+        "La memoria total debe ser un entero positivo"
+      );
     }
 
     if (!Number.isInteger(quantum) || quantum <= 0) {
-      throw new Error("El quantum debe ser un entero positivo");
+      throw new Error(
+        "El quantum debe ser un entero positivo"
+      );
     }
 
     this.memoriaTotal = memoriaTotal;
     this.quantum = quantum;
+    this.politicaAsignacion = politicaAsignacion;
+
     this.tick = 0;
 
-    this.memoria = new Memoria(memoriaTotal);
+    this.memoria = new Memoria(
+      memoriaTotal,
+      politicaAsignacion
+    );
 
     this.colaNuevos = [];
     this.colaEsperandoMemoria = [];
@@ -54,7 +70,9 @@ export class Simulacion implements ISimulacion {
     );
 
     if (pidDuplicado) {
-      throw new Error("Ya existe un proceso con ese PID");
+      throw new Error(
+        "Ya existe un proceso con ese PID"
+      );
     }
 
     if (memoriaRequerida > this.memoriaTotal) {
@@ -79,7 +97,9 @@ export class Simulacion implements ISimulacion {
     );
 
     if (!proceso) {
-      throw new Error("El proceso no existe");
+      throw new Error(
+        "El proceso no existe"
+      );
     }
 
     if (proceso.estado === EstadoProceso.Terminado) {
@@ -122,7 +142,9 @@ export class Simulacion implements ISimulacion {
   }
 
   reintentarProcesosEnEspera(): void {
-    const procesosEnEspera = [...this.colaEsperandoMemoria];
+    const procesosEnEspera = [
+      ...this.colaEsperandoMemoria
+    ];
 
     for (const pid of procesosEnEspera) {
       this.admitirProceso(pid);
@@ -142,12 +164,14 @@ export class Simulacion implements ISimulacion {
       cpuRestante: proceso.cpuRestante,
       estado: proceso.estado,
       quantumConsumido: proceso.quantumConsumido,
-      tiempoBloqueoRestante: proceso.tiempoBloqueoRestante,
-      obtenerResumen: () => proceso.obtenerResumen(),
+      tiempoBloqueoRestante:
+        proceso.tiempoBloqueoRestante,
+      obtenerResumen: () =>
+        proceso.obtenerResumen(),
     }));
   }
 
-  consultarMemoria() {
+  consultarMemoria(): IBloqueMemoria[] {
     return this.memoria.obtenerBloques();
   }
 }
