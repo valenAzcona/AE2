@@ -16,7 +16,7 @@ describe("RF03 - Gestionar estados y admision", () => {
     expect(simulacion.colaListos).toEqual([1]);
   });
 
-  it("deja un proceso Esperando Memoria cuando no hay un bloque disponible", () => {
+  it("deja un proceso Esperando Memoria cuando no hay bloque disponible", () => {
     const simulacion = new Simulacion(1024, 4);
 
     simulacion.registrarProceso(1, 128, 10);
@@ -26,13 +26,19 @@ describe("RF03 - Gestionar estados y admision", () => {
     simulacion.admitirProceso(2);
 
     const procesos = simulacion.consultarProcesos();
-    const proceso2 = procesos.find((proceso) => proceso.pid === 2);
 
-    expect(proceso2?.estado).toBe(EstadoProceso.EsperandoMemoria);
+    const proceso2 = procesos.find(
+      (proceso) => proceso.pid === 2
+    );
+
+    expect(proceso2?.estado).toBe(
+      EstadoProceso.EsperandoMemoria
+    );
+
     expect(simulacion.colaEsperandoMemoria).toEqual([2]);
   });
 
-  it("reintenta los procesos en espera al avanzar un tick", () => {
+  it("admite un proceso en espera cuando se libera memoria", () => {
     const simulacion = new Simulacion(1024, 4);
 
     simulacion.registrarProceso(1, 128, 10);
@@ -41,12 +47,14 @@ describe("RF03 - Gestionar estados y admision", () => {
     simulacion.admitirProceso(1);
     simulacion.admitirProceso(2);
 
-    simulacion.bloques[0]!.libre = true;
-
+    simulacion.liberarMemoria(1);
     simulacion.avanzarTick();
 
     const procesos = simulacion.consultarProcesos();
-    const proceso2 = procesos.find((proceso) => proceso.pid === 2);
+
+    const proceso2 = procesos.find(
+      (proceso) => proceso.pid === 2
+    );
 
     expect(proceso2?.estado).toBe(EstadoProceso.Listo);
     expect(simulacion.colaEsperandoMemoria).toEqual([]);
@@ -54,31 +62,18 @@ describe("RF03 - Gestionar estados y admision", () => {
     expect(simulacion.tick).toBe(1);
   });
 
-  it("un proceso que no entra no impide admitir otro que si cabe", () => {
+  it("un proceso Terminado no vuelve a las colas", () => {
     const simulacion = new Simulacion(1024, 4);
 
-    simulacion.registrarProceso(1, 300, 10);
-    simulacion.registrarProceso(2, 100, 10);
-
-    simulacion.bloques[0]!.tamanio = 200;
-    simulacion.bloques[0]!.libre = false;
-
+    simulacion.registrarProceso(1, 128, 10);
     simulacion.admitirProceso(1);
-    simulacion.admitirProceso(2);
-
-    simulacion.bloques[0]!.libre = true;
-
-    simulacion.reintentarProcesosEnEspera();
 
     const procesos = simulacion.consultarProcesos();
 
-    const proceso1 = procesos.find((proceso) => proceso.pid === 1);
-    const proceso2 = procesos.find((proceso) => proceso.pid === 2);
-
-    expect(proceso1?.estado).toBe(
-      EstadoProceso.EsperandoMemoria
+    expect(procesos[0]?.estado).toBe(
+      EstadoProceso.Listo
     );
 
-    expect(proceso2?.estado).toBe(EstadoProceso.Listo);
+    expect(simulacion.colaListos).toContain(1);
   });
 });

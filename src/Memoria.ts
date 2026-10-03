@@ -22,6 +22,7 @@ export class Memoria implements IMemoria {
         inicio: 0,
         tamanio: tamanioTotal,
         libre: true,
+        pidProceso: null,
       },
     ];
   }
@@ -32,13 +33,37 @@ export class Memoria implements IMemoria {
     }));
   }
 
-  buscarBloqueDisponible(
+  asignar(
+    pid: number,
     tamanio: number
-  ): IBloqueMemoria | undefined {
-    return this.bloques.find(
+  ): boolean {
+    const bloqueDisponible = this.bloques.find(
       (bloque) =>
         bloque.libre &&
         bloque.tamanio >= tamanio
     );
+
+    if (!bloqueDisponible) {
+      return false;
+    }
+
+    bloqueDisponible.libre = false;
+    bloqueDisponible.pidProceso = pid;
+
+    return true;
+  }
+
+  liberar(pid: number): void {
+    const bloque = this.bloques.find(
+      (bloqueActual) =>
+        bloqueActual.pidProceso === pid
+    );
+
+    if (!bloque) {
+      return;
+    }
+
+    bloque.libre = true;
+    bloque.pidProceso = null;
   }
 }

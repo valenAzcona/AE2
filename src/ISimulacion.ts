@@ -1,4 +1,5 @@
 import type { IProceso } from "./IProceso.js";
+import type { IBloqueMemoria } from "./IMemoria.js";
 
 export interface ISimulacion {
   readonly memoriaTotal: number;
@@ -14,9 +15,13 @@ export interface ISimulacion {
 
   admitirProceso(pid: number): void;
 
+  liberarMemoria(pid: number): void;
+
   reintentarProcesosEnEspera(): void;
 
   avanzarTick(): void;
 
   consultarProcesos(): IProceso[];
+
+  consultarMemoria(): IBloqueMemoria[];
 }

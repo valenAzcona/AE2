@@ -2,19 +2,13 @@ import { Proceso } from "./Proceso.js";
 import type { IProceso } from "./IProceso.js";
 import type { ISimulacion } from "./ISimulacion.js";
 import { EstadoProceso } from "./EstadoProceso.js";
-
-export interface BloqueMemoria {
-  inicio: number;
-  tamanio: number;
-  libre: boolean;
-}
+import { Memoria } from "./Memoria.js";
 
 export class Simulacion implements ISimulacion {
   readonly memoriaTotal: number;
   readonly quantum: number;
 
   tick: number;
-  bloques: BloqueMemoria[];
 
   colaNuevos: number[];
   colaEsperandoMemoria: number[];
@@ -24,6 +18,7 @@ export class Simulacion implements ISimulacion {
   procesosTerminados: number;
 
   private procesos: Proceso[];
+  private memoria: Memoria;
 
   constructor(memoriaTotal: number, quantum: number) {
     if (!Number.isInteger(memoriaTotal) || memoriaTotal <= 0) {
@@ -38,13 +33,7 @@ export class Simulacion implements ISimulacion {
     this.quantum = quantum;
     this.tick = 0;
 
-    this.bloques = [
-      {
-        inicio: 0,
-        tamanio: memoriaTotal,
-        libre: true,
-      },
-    ];
+    this.memoria = new Memoria(memoriaTotal);
 
     this.colaNuevos = [];
     this.colaEsperandoMemoria = [];
@@ -97,17 +86,16 @@ export class Simulacion implements ISimulacion {
       return;
     }
 
-    const bloqueDisponible = this.bloques.find(
-      (bloque) =>
-        bloque.libre &&
-        bloque.tamanio >= proceso.memoriaRequerida
-    );
-
     this.colaNuevos = this.colaNuevos.filter(
       (pidActual) => pidActual !== pid
     );
 
-    if (!bloqueDisponible) {
+    const asignado = this.memoria.asignar(
+      proceso.pid,
+      proceso.memoriaRequerida
+    );
+
+    if (!asignado) {
       proceso.estado = EstadoProceso.EsperandoMemoria;
 
       if (!this.colaEsperandoMemoria.includes(pid)) {
@@ -117,7 +105,6 @@ export class Simulacion implements ISimulacion {
       return;
     }
 
-    bloqueDisponible.libre = false;
     proceso.estado = EstadoProceso.Listo;
 
     this.colaEsperandoMemoria =
@@ -128,6 +115,10 @@ export class Simulacion implements ISimulacion {
     if (!this.colaListos.includes(pid)) {
       this.colaListos.push(pid);
     }
+  }
+
+  liberarMemoria(pid: number): void {
+    this.memoria.liberar(pid);
   }
 
   reintentarProcesosEnEspera(): void {
@@ -154,5 +145,9 @@ export class Simulacion implements ISimulacion {
       tiempoBloqueoRestante: proceso.tiempoBloqueoRestante,
       obtenerResumen: () => proceso.obtenerResumen(),
     }));
+  }
+
+  consultarMemoria() {
+    return this.memoria.obtenerBloques();
   }
 }

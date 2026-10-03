@@ -2,6 +2,7 @@ export interface IBloqueMemoria {
   inicio: number;
   tamanio: number;
   libre: boolean;
+  pidProceso: number | null;
 }
 
 export interface IMemoria {
@@ -9,7 +10,10 @@ export interface IMemoria {
 
   obtenerBloques(): IBloqueMemoria[];
 
-  buscarBloqueDisponible(
+  asignar(
+    pid: number,
     tamanio: number
-  ): IBloqueMemoria | undefined;
+  ): boolean;
+
+  liberar(pid: number): void;
 }

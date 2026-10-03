@@ -1,19 +1,20 @@
 import { describe, expect, it } from "vitest";
 import { Simulacion } from "../src/simulacion.js";
 
-describe("RF01 - Configurar e iniciar la simulación", () => {
-  it("inicia correctamente con memoria y quantum válidos", () => {
+describe("RF01 - Configurar e iniciar la simulacion", () => {
+  it("inicia correctamente con memoria y quantum validos", () => {
     const simulacion = new Simulacion(1024, 4);
 
     expect(simulacion.memoriaTotal).toBe(1024);
     expect(simulacion.quantum).toBe(4);
     expect(simulacion.tick).toBe(0);
 
-    expect(simulacion.bloques).toEqual([
+    expect(simulacion.consultarMemoria()).toEqual([
       {
         inicio: 0,
         tamanio: 1024,
         libre: true,
+        pidProceso: null,
       },
     ]);
 
@@ -24,13 +25,13 @@ describe("RF01 - Configurar e iniciar la simulación", () => {
     expect(simulacion.procesosTerminados).toBe(0);
   });
 
-  it("rechaza memoria total inválida", () => {
+  it("rechaza memoria total invalida", () => {
     expect(() => new Simulacion(0, 4)).toThrow();
     expect(() => new Simulacion(-100, 4)).toThrow();
     expect(() => new Simulacion(100.5, 4)).toThrow();
   });
 
-  it("rechaza quantum inválido", () => {
+  it("rechaza quantum invalido", () => {
     expect(() => new Simulacion(1024, 0)).toThrow();
     expect(() => new Simulacion(1024, -2)).toThrow();
     expect(() => new Simulacion(1024, 2.5)).toThrow();
