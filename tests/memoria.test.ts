@@ -92,4 +92,95 @@ describe("RF04 - Asignar memoria contigua", () => {
     expect(asignado).toBe(false);
     expect(despues).toEqual(antes);
   });
+  it("fusiona con el bloque libre de la derecha", () => {
+  const memoria = new Memoria(500);
+
+  memoria.asignar(1, 100);
+  memoria.asignar(2, 100);
+
+  memoria.liberar(2);
+
+  const bloques = memoria.obtenerBloques();
+
+  expect(bloques).toHaveLength(2);
+
+  expect(bloques[1]).toMatchObject({
+    inicio: 100,
+    tamanio: 400,
+    libre: true,
+    pidProceso: null,
+  });
+});
+
+it("fusiona con el bloque libre de la izquierda", () => {
+  const memoria = new Memoria(500);
+
+  memoria.asignar(1, 100);
+  memoria.asignar(2, 100);
+  memoria.asignar(3, 100);
+
+  memoria.liberar(1);
+  memoria.liberar(2);
+
+  const bloques = memoria.obtenerBloques();
+
+  expect(bloques[0]).toMatchObject({
+    inicio: 0,
+    tamanio: 200,
+    libre: true,
+    pidProceso: null,
+  });
+});
+
+it("fusiona bloques libres de ambos lados", () => {
+  const memoria = new Memoria(400);
+
+  memoria.asignar(1, 100);
+  memoria.asignar(2, 100);
+  memoria.asignar(3, 100);
+  memoria.asignar(4, 100);
+
+  memoria.liberar(1);
+  memoria.liberar(3);
+  memoria.liberar(2);
+
+  const bloques = memoria.obtenerBloques();
+
+  expect(bloques[0]).toMatchObject({
+    inicio: 0,
+    tamanio: 300,
+    libre: true,
+    pidProceso: null,
+  });
+
+  expect(bloques[1]).toMatchObject({
+    inicio: 300,
+    tamanio: 100,
+    libre: false,
+    pidProceso: 4,
+  });
+});
+
+it("al liberar todos los procesos vuelve a existir un unico bloque libre", () => {
+  const memoria = new Memoria(500);
+
+  memoria.asignar(1, 100);
+  memoria.asignar(2, 150);
+  memoria.asignar(3, 250);
+
+  memoria.liberar(2);
+  memoria.liberar(1);
+  memoria.liberar(3);
+
+  const bloques = memoria.obtenerBloques();
+
+  expect(bloques).toHaveLength(1);
+
+  expect(bloques[0]).toMatchObject({
+    inicio: 0,
+    tamanio: 500,
+    libre: true,
+    pidProceso: null,
+  });
+ });
 });

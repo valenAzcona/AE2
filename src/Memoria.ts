@@ -99,5 +99,40 @@ export class Memoria implements IMemoria {
       true,
       null
     );
+
+    this.fusionarBloquesLibres();
+  }
+
+  private fusionarBloquesLibres(): void {
+    let indice = 0;
+
+    while (indice < this.bloques.length - 1) {
+      const actual = this.bloques[indice]!;
+      const siguiente = this.bloques[indice + 1]!;
+
+      const sonContiguos =
+        actual.obtenerFin() === siguiente.inicio;
+
+      if (
+        actual.libre &&
+        siguiente.libre &&
+        sonContiguos
+      ) {
+        const bloqueFusionado = new BloqueMemoria(
+          actual.inicio,
+          actual.tamanio + siguiente.tamanio,
+          true,
+          null
+        );
+
+        this.bloques.splice(
+          indice,
+          2,
+          bloqueFusionado
+        );
+      } else {
+        indice++;
+      }
+    }
   }
 }
