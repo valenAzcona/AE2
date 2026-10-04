@@ -169,9 +169,32 @@ export class Simulacion implements ISimulacion {
     }
   }
 
+  programarEventoES(
+    pid: number,
+    despuesDeTicksCpu: number,
+    duracion: number
+  ): void {
+    const proceso = this.procesos.find(
+      (procesoActual) => procesoActual.pid === pid
+    );
+
+    if (!proceso) {
+      throw new Error(
+        "El proceso no existe"
+      );
+    }
+
+    proceso.programarEventoES(
+      despuesDeTicksCpu,
+      duracion
+    );
+  }
+
   avanzarTick(): void {
     this.prepararNuevosParaAdmision();
     this.reintentarProcesosEnEspera();
+
+    this.actualizarBloqueados();
 
     this.ejecutarCpu();
 
@@ -217,6 +240,38 @@ export class Simulacion implements ISimulacion {
     this.colaNuevos = [];
   }
 
+  private actualizarBloqueados(): void {
+    const bloqueados = [...this.colaBloqueados];
+
+    for (const pid of bloqueados) {
+      const proceso = this.procesos.find(
+        (procesoActual) => procesoActual.pid === pid
+      );
+
+      if (!proceso) {
+        continue;
+      }
+
+      const finalizoBloqueo =
+        proceso.actualizarBloqueo();
+
+      if (!finalizoBloqueo) {
+        continue;
+      }
+
+      proceso.marcarListo();
+
+      this.colaBloqueados =
+        this.colaBloqueados.filter(
+          (pidActual) => pidActual !== pid
+        );
+
+      if (!this.colaListos.includes(pid)) {
+        this.colaListos.push(pid);
+      }
+    }
+  }
+
   private ejecutarCpu(): void {
     if (this._pidEjecutando === null) {
       this.despacharSiguiente();
@@ -240,6 +295,11 @@ export class Simulacion implements ISimulacion {
 
     if (proceso.cpuRestante === 0) {
       this.finalizarProceso(proceso);
+      return;
+    }
+
+    if (proceso.debeBloquearsePorES()) {
+      this.bloquearProceso(proceso);
       return;
     }
 
@@ -278,6 +338,17 @@ export class Simulacion implements ISimulacion {
     this.procesosTerminados++;
 
     this._pidEjecutando = null;
+  }
+
+  private bloquearProceso(proceso: Proceso): void {
+    proceso.bloquearPorES();
+
+    if (!this.colaBloqueados.includes(proceso.pid)) {
+      this.colaBloqueados.push(proceso.pid);
+    }
+
+    this._pidEjecutando = null;
+    this._cambiosContexto++;
   }
 
   private procesarFinQuantum(proceso: Proceso): void {

@@ -17,5 +17,16 @@ export interface IProceso {
   ejecutarTick(): void;
   reiniciarQuantum(): void;
 
+  programarEventoES(
+    despuesDeTicksCpu: number,
+    duracion: number
+  ): void;
+
+  debeBloquearsePorES(): boolean;
+
+  bloquearPorES(): void;
+
+  actualizarBloqueo(): boolean;
+
   obtenerResumen(): string;
 }

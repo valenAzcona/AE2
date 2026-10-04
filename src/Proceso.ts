@@ -11,6 +11,10 @@ export class Proceso implements IProceso {
   private _quantumConsumido: number;
   private _tiempoBloqueoRestante: number;
 
+  private _eventoESDespuesDe: number | null;
+  private _duracionEventoES: number | null;
+  private _eventoESDisparado: boolean;
+
   constructor(
     pid: number,
     memoriaRequerida: number,
@@ -48,6 +52,10 @@ export class Proceso implements IProceso {
     this._estado = EstadoProceso.Nuevo;
     this._quantumConsumido = 0;
     this._tiempoBloqueoRestante = 0;
+
+    this._eventoESDespuesDe = null;
+    this._duracionEventoES = null;
+    this._eventoESDisparado = false;
   }
 
   get pid(): number {
@@ -121,6 +129,82 @@ export class Proceso implements IProceso {
 
   reiniciarQuantum(): void {
     this._quantumConsumido = 0;
+  }
+
+  programarEventoES(
+    despuesDeTicksCpu: number,
+    duracion: number
+  ): void {
+    if (
+      !Number.isInteger(despuesDeTicksCpu) ||
+      despuesDeTicksCpu <= 0
+    ) {
+      throw new Error(
+        "El momento del evento de E/S debe ser un entero positivo"
+      );
+    }
+
+    if (
+      !Number.isInteger(duracion) ||
+      duracion <= 0
+    ) {
+      throw new Error(
+        "La duración del evento de E/S debe ser un entero positivo"
+      );
+    }
+
+    if (despuesDeTicksCpu >= this._tiempoTotalCpu) {
+      throw new Error(
+        "El evento de E/S debe ocurrir antes de finalizar el proceso"
+      );
+    }
+
+    this._eventoESDespuesDe = despuesDeTicksCpu;
+    this._duracionEventoES = duracion;
+    this._eventoESDisparado = false;
+  }
+
+  debeBloquearsePorES(): boolean {
+    if (
+      this._eventoESDespuesDe === null ||
+      this._eventoESDisparado
+    ) {
+      return false;
+    }
+
+    const cpuConsumida =
+      this._tiempoTotalCpu - this._cpuRestante;
+
+    return cpuConsumida === this._eventoESDespuesDe;
+  }
+
+  bloquearPorES(): void {
+    if (
+      this._duracionEventoES === null ||
+      !this.debeBloquearsePorES()
+    ) {
+      return;
+    }
+
+    this._estado = EstadoProceso.Bloqueado;
+    this._tiempoBloqueoRestante =
+      this._duracionEventoES;
+
+    this._quantumConsumido = 0;
+    this._eventoESDisparado = true;
+  }
+
+  actualizarBloqueo(): boolean {
+    if (
+      this._estado !== EstadoProceso.Bloqueado ||
+      this._tiempoBloqueoRestante <= 0
+    ) {
+      return false;
+    }
+
+    this._tiempoBloqueoRestante--;
+
+    return this._tiempoBloqueoRestante === 0;
   }
 
   obtenerResumen(): string {

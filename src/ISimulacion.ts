@@ -23,6 +23,12 @@ export interface ISimulacion {
 
   reintentarProcesosEnEspera(): void;
 
+  programarEventoES(
+    pid: number,
+    despuesDeTicksCpu: number,
+    duracion: number
+  ): void;
+
   avanzarTick(): void;
 
   consultarProcesos(): IProcesoVista[];
