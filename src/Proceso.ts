@@ -94,8 +94,33 @@ export class Proceso implements IProceso {
     this._estado = EstadoProceso.Listo;
   }
 
+  marcarEjecutando(): void {
+    if (this._estado === EstadoProceso.Terminado) {
+      return;
+    }
+
+    this._estado = EstadoProceso.Ejecutando;
+  }
+
   marcarTerminado(): void {
     this._estado = EstadoProceso.Terminado;
+    this._quantumConsumido = 0;
+  }
+
+  ejecutarTick(): void {
+    if (
+      this._estado !== EstadoProceso.Ejecutando ||
+      this._cpuRestante <= 0
+    ) {
+      return;
+    }
+
+    this._cpuRestante--;
+    this._quantumConsumido++;
+  }
+
+  reiniciarQuantum(): void {
+    this._quantumConsumido = 0;
   }
 
   obtenerResumen(): string {

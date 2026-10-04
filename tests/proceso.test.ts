@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Simulacion } from "../src/simulacion.js";
+import { Proceso } from "../src/Proceso.js";
 import { EstadoProceso } from "../src/EstadoProceso.js";
 
 describe("RF02 - Registrar y consultar procesos", () => {
@@ -91,5 +92,65 @@ describe("RF02 - Registrar y consultar procesos", () => {
       cpuRestante: 10,
       estado: EstadoProceso.Nuevo,
     });
+  });
+});
+
+describe("Ejecucion de procesos", () => {
+  it("puede pasar al estado Ejecutando", () => {
+    const proceso = new Proceso(1, 128, 5);
+
+    proceso.marcarEjecutando();
+
+    expect(proceso.estado).toBe(
+      EstadoProceso.Ejecutando
+    );
+  });
+
+  it("ejecutar un tick reduce CPU y aumenta el quantum consumido", () => {
+    const proceso = new Proceso(1, 128, 5);
+
+    proceso.marcarEjecutando();
+    proceso.ejecutarTick();
+
+    expect(proceso.cpuRestante).toBe(4);
+    expect(proceso.quantumConsumido).toBe(1);
+  });
+
+  it("no consume CPU si no esta Ejecutando", () => {
+    const proceso = new Proceso(1, 128, 5);
+
+    proceso.ejecutarTick();
+
+    expect(proceso.cpuRestante).toBe(5);
+    expect(proceso.quantumConsumido).toBe(0);
+  });
+
+  it("permite reiniciar el quantum consumido", () => {
+    const proceso = new Proceso(1, 128, 5);
+
+    proceso.marcarEjecutando();
+    proceso.ejecutarTick();
+    proceso.ejecutarTick();
+
+    expect(proceso.quantumConsumido).toBe(2);
+
+    proceso.reiniciarQuantum();
+
+    expect(proceso.quantumConsumido).toBe(0);
+  });
+
+  it("al terminar reinicia el quantum", () => {
+    const proceso = new Proceso(1, 128, 5);
+
+    proceso.marcarEjecutando();
+    proceso.ejecutarTick();
+
+    proceso.marcarTerminado();
+
+    expect(proceso.estado).toBe(
+      EstadoProceso.Terminado
+    );
+
+    expect(proceso.quantumConsumido).toBe(0);
   });
 });

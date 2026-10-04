@@ -11,7 +11,11 @@ export interface IProceso {
 
   marcarEsperandoMemoria(): void;
   marcarListo(): void;
+  marcarEjecutando(): void;
   marcarTerminado(): void;
+
+  ejecutarTick(): void;
+  reiniciarQuantum(): void;
 
   obtenerResumen(): string;
 }
