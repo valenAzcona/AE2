@@ -6,6 +6,8 @@ export interface ISimulacion {
   readonly memoriaTotal: number;
   readonly quantum: number;
   readonly politicaAsignacion: PoliticaAsignacion;
+  readonly pidEjecutando: number | null;
+  readonly cambiosContexto: number;
 
   tick: number;
 

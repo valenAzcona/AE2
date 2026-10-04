@@ -23,6 +23,9 @@ export class Simulacion implements ISimulacion {
   private procesos: Proceso[];
   private memoria: Memoria;
 
+  private _pidEjecutando: number | null;
+  private _cambiosContexto: number;
+
   constructor(
     memoriaTotal: number,
     quantum: number,
@@ -57,7 +60,19 @@ export class Simulacion implements ISimulacion {
     this.colaBloqueados = [];
 
     this.procesosTerminados = 0;
+
     this.procesos = [];
+
+    this._pidEjecutando = null;
+    this._cambiosContexto = 0;
+  }
+
+  get pidEjecutando(): number | null {
+    return this._pidEjecutando;
+  }
+
+  get cambiosContexto(): number {
+    return this._cambiosContexto;
   }
 
   registrarProceso(
@@ -102,7 +117,10 @@ export class Simulacion implements ISimulacion {
       );
     }
 
-    if (proceso.estado === EstadoProceso.Terminado) {
+    if (
+      proceso.estado !== EstadoProceso.Nuevo &&
+      proceso.estado !== EstadoProceso.EsperandoMemoria
+    ) {
       return;
     }
 
@@ -152,7 +170,11 @@ export class Simulacion implements ISimulacion {
   }
 
   avanzarTick(): void {
+    this.prepararNuevosParaAdmision();
     this.reintentarProcesosEnEspera();
+
+    this.ejecutarCpu();
+
     this.tick++;
   }
 
@@ -171,5 +193,105 @@ export class Simulacion implements ISimulacion {
 
   consultarMemoria(): IBloqueMemoria[] {
     return this.memoria.obtenerBloques();
+  }
+
+  private prepararNuevosParaAdmision(): void {
+    const nuevos = [...this.colaNuevos];
+
+    for (const pid of nuevos) {
+      const proceso = this.procesos.find(
+        (procesoActual) => procesoActual.pid === pid
+      );
+
+      if (!proceso) {
+        continue;
+      }
+
+      proceso.marcarEsperandoMemoria();
+
+      if (!this.colaEsperandoMemoria.includes(pid)) {
+        this.colaEsperandoMemoria.push(pid);
+      }
+    }
+
+    this.colaNuevos = [];
+  }
+
+  private ejecutarCpu(): void {
+    if (this._pidEjecutando === null) {
+      this.despacharSiguiente();
+    }
+
+    if (this._pidEjecutando === null) {
+      return;
+    }
+
+    const proceso = this.procesos.find(
+      (procesoActual) =>
+        procesoActual.pid === this._pidEjecutando
+    );
+
+    if (!proceso) {
+      this._pidEjecutando = null;
+      return;
+    }
+
+    proceso.ejecutarTick();
+
+    if (proceso.cpuRestante === 0) {
+      this.finalizarProceso(proceso);
+      return;
+    }
+
+    if (proceso.quantumConsumido >= this.quantum) {
+      this.procesarFinQuantum(proceso);
+    }
+  }
+
+  private despacharSiguiente(): void {
+    const siguientePid = this.colaListos.shift();
+
+    if (siguientePid === undefined) {
+      return;
+    }
+
+    const proceso = this.procesos.find(
+      (procesoActual) =>
+        procesoActual.pid === siguientePid
+    );
+
+    if (!proceso) {
+      return;
+    }
+
+    proceso.reiniciarQuantum();
+    proceso.marcarEjecutando();
+
+    this._pidEjecutando = proceso.pid;
+  }
+
+  private finalizarProceso(proceso: Proceso): void {
+    proceso.marcarTerminado();
+
+    this.memoria.liberar(proceso.pid);
+
+    this.procesosTerminados++;
+
+    this._pidEjecutando = null;
+  }
+
+  private procesarFinQuantum(proceso: Proceso): void {
+    if (this.colaListos.length === 0) {
+      proceso.reiniciarQuantum();
+      return;
+    }
+
+    proceso.marcarListo();
+    proceso.reiniciarQuantum();
+
+    this.colaListos.push(proceso.pid);
+
+    this._pidEjecutando = null;
+    this._cambiosContexto++;
   }
 }
