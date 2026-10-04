@@ -2,6 +2,7 @@ import { Proceso } from "./Proceso.js";
 import type { IProcesoVista } from "./IProcesoVista.js";
 import type { ISimulacion } from "./ISimulacion.js";
 import type { IBloqueMemoria } from "./IBloqueMemoria.js";
+import type { IMetricas } from "./IMetricas.js";
 import { EstadoProceso } from "./EstadoProceso.js";
 import { Memoria } from "./Memoria.js";
 import { PoliticaAsignacion } from "./PoliticaAsignacion.js";
@@ -25,6 +26,7 @@ export class Simulacion implements ISimulacion {
 
   private _pidEjecutando: number | null;
   private _cambiosContexto: number;
+  private _ticksConCpuOcupada: number;
 
   constructor(
     memoriaTotal: number,
@@ -60,11 +62,11 @@ export class Simulacion implements ISimulacion {
     this.colaBloqueados = [];
 
     this.procesosTerminados = 0;
-
     this.procesos = [];
 
     this._pidEjecutando = null;
     this._cambiosContexto = 0;
+    this._ticksConCpuOcupada = 0;
   }
 
   get pidEjecutando(): number | null {
@@ -218,6 +220,61 @@ export class Simulacion implements ISimulacion {
     return this.memoria.obtenerBloques();
   }
 
+  consultarMetricas(): IMetricas {
+    const bloques = this.memoria.obtenerBloques();
+
+    const bloquesLibres = bloques.filter(
+      (bloque) => bloque.libre
+    );
+
+    const memoriaLibreTotal = bloquesLibres.reduce(
+      (total, bloque) => total + bloque.tamanio,
+      0
+    );
+
+    const mayorBloqueLibre =
+      bloquesLibres.length === 0
+        ? 0
+        : Math.max(
+            ...bloquesLibres.map(
+              (bloque) => bloque.tamanio
+            )
+          );
+
+    const memoriaOcupada =
+      this.memoriaTotal - memoriaLibreTotal;
+
+    const ocupacionMemoria =
+      (memoriaOcupada / this.memoriaTotal) * 100;
+
+    const utilizacionCPU =
+      this.tick === 0
+        ? 0
+        : (
+            this._ticksConCpuOcupada /
+            this.tick
+          ) * 100;
+
+    const fragmentacionExterna =
+      memoriaLibreTotal === 0
+        ? 0
+        : (
+            1 -
+            mayorBloqueLibre /
+              memoriaLibreTotal
+          ) * 100;
+
+    return {
+      ocupacionMemoria,
+      utilizacionCPU,
+      cambiosContexto:
+        this._cambiosContexto,
+      memoriaLibreTotal,
+      mayorBloqueLibre,
+      fragmentacionExterna,
+    };
+  }
+
   private prepararNuevosParaAdmision(): void {
     const nuevos = [...this.colaNuevos];
 
@@ -290,6 +347,8 @@ export class Simulacion implements ISimulacion {
       this._pidEjecutando = null;
       return;
     }
+
+    this._ticksConCpuOcupada++;
 
     proceso.ejecutarTick();
 
