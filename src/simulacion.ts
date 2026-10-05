@@ -7,8 +7,10 @@ import type { IMetricas } from "./IMetricas.js";
 import type { IEstadoSistema } from "./IEstadoSistema.js";
 import { EstadoProceso } from "./EstadoProceso.js";
 import { Memoria } from "./Memoria.js";
+import type { IMemoria } from "./IMemoria.js";
 import { PoliticaAsignacion } from "./PoliticaAsignacion.js";
 import { Planificador } from "./Planificador.js";
+import type { IPlanificador } from "./IPlanificador.js";
 
 export class Simulacion implements ISimulacion {
   readonly memoriaTotal: number;
@@ -23,9 +25,9 @@ export class Simulacion implements ISimulacion {
 
   private _procesosTerminados: number;
 
-  private procesos: Proceso[];
-  private memoria: Memoria;
-  private planificador: Planificador;
+  private procesos: IProceso[];
+  private memoria: IMemoria;
+  private planificador: IPlanificador;
 
   private _ticksConCpuOcupada: number;
 
