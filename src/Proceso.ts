@@ -132,37 +132,52 @@ export class Proceso implements IProceso {
   }
 
   programarEventoES(
-    despuesDeTicksCpu: number,
-    duracion: number
-  ): void {
-    if (
-      !Number.isInteger(despuesDeTicksCpu) ||
-      despuesDeTicksCpu <= 0
-    ) {
-      throw new Error(
-        "El momento del evento de E/S debe ser un entero positivo"
-      );
-    }
-
-    if (
-      !Number.isInteger(duracion) ||
-      duracion <= 0
-    ) {
-      throw new Error(
-        "La duración del evento de E/S debe ser un entero positivo"
-      );
-    }
-
-    if (despuesDeTicksCpu >= this._tiempoTotalCpu) {
-      throw new Error(
-        "El evento de E/S debe ocurrir antes de finalizar el proceso"
-      );
-    }
-
-    this._eventoESDespuesDe = despuesDeTicksCpu;
-    this._duracionEventoES = duracion;
-    this._eventoESDisparado = false;
+  despuesDeTicksCpu: number,
+  duracion: number
+): void {
+  if (
+    !Number.isInteger(despuesDeTicksCpu) ||
+    despuesDeTicksCpu <= 0
+  ) {
+    throw new Error(
+      "El momento del evento de E/S debe ser un entero positivo"
+    );
   }
+
+  if (
+    !Number.isInteger(duracion) ||
+    duracion <= 0
+  ) {
+    throw new Error(
+      "La duración del evento de E/S debe ser un entero positivo"
+    );
+  }
+
+  if (this._estado === EstadoProceso.Terminado) {
+    throw new Error(
+      "No se puede programar E/S para un proceso terminado"
+    );
+  }
+
+  const cpuConsumida =
+    this._tiempoTotalCpu - this._cpuRestante;
+
+  if (despuesDeTicksCpu <= cpuConsumida) {
+    throw new Error(
+      "El momento del evento de E/S ya paso"
+    );
+  }
+
+  if (despuesDeTicksCpu >= this._tiempoTotalCpu) {
+    throw new Error(
+      "El evento de E/S debe ocurrir antes de finalizar el proceso"
+    );
+  }
+
+  this._eventoESDespuesDe = despuesDeTicksCpu;
+  this._duracionEventoES = duracion;
+  this._eventoESDisparado = false;
+}
 
   debeBloquearsePorES(): boolean {
     if (
