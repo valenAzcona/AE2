@@ -1,13 +1,20 @@
 import type { IMemoria } from "./IMemoria.js";
 import type { IBloqueMemoria } from "./IBloqueMemoria.js";
+import type { IPoliticaAsignacion } from "./IPoliticaAsignacion.js";
+
 import { BloqueMemoria } from "./BloqueMemoria.js";
 import { PoliticaAsignacion } from "./PoliticaAsignacion.js";
+
+import { PrimerAjuste } from "./PrimerAjuste.js";
+import { MejorAjuste } from "./MejorAjuste.js";
+import { PeorAjuste } from "./PeorAjuste.js";
 
 export class Memoria implements IMemoria {
   readonly tamanioTotal: number;
   readonly politicaAsignacion: PoliticaAsignacion;
 
   private bloques: BloqueMemoria[];
+  private estrategiaAsignacion: IPoliticaAsignacion;
 
   constructor(
     tamanioTotal: number,
@@ -21,6 +28,9 @@ export class Memoria implements IMemoria {
 
     this.tamanioTotal = tamanioTotal;
     this.politicaAsignacion = politicaAsignacion;
+
+    this.estrategiaAsignacion =
+      this.crearEstrategia(politicaAsignacion);
 
     this.bloques = [
       new BloqueMemoria(0, tamanioTotal)
@@ -41,7 +51,21 @@ export class Memoria implements IMemoria {
     pid: number,
     tamanio: number
   ): boolean {
-    const indice = this.buscarBloque(tamanio);
+    const pidYaAsignado = this.bloques.some(
+      (bloque) => bloque.pidProceso === pid
+    );
+
+    if (pidYaAsignado) {
+      throw new Error(
+        "El proceso ya tiene memoria asignada"
+      );
+    }
+
+    const indice =
+      this.estrategiaAsignacion.seleccionar(
+        this.bloques,
+        tamanio
+      );
 
     if (indice === -1) {
       return false;
@@ -105,43 +129,24 @@ export class Memoria implements IMemoria {
     this.fusionarBloquesLibres();
   }
 
-  private buscarBloque(tamanio: number): number {
-    let indiceElegido = -1;
+  private crearEstrategia(
+    politica: PoliticaAsignacion
+  ): IPoliticaAsignacion {
+    switch (politica) {
+      case PoliticaAsignacion.FirstFit:
+        return new PrimerAjuste();
 
-    for (let i = 0; i < this.bloques.length; i++) {
-      const bloque = this.bloques[i]!;
+      case PoliticaAsignacion.BestFit:
+        return new MejorAjuste();
 
-      if (!bloque.libre || bloque.tamanio < tamanio) {
-        continue;
-      }
+      case PoliticaAsignacion.WorstFit:
+        return new PeorAjuste();
 
-      if (this.politicaAsignacion === PoliticaAsignacion.FirstFit) {
-        return i;
-      }
-
-      if (indiceElegido === -1) {
-        indiceElegido = i;
-        continue;
-      }
-
-      const bloqueElegido = this.bloques[indiceElegido]!;
-
-      if (
-        this.politicaAsignacion === PoliticaAsignacion.BestFit &&
-        bloque.tamanio < bloqueElegido.tamanio
-      ) {
-        indiceElegido = i;
-      }
-
-      if (
-        this.politicaAsignacion === PoliticaAsignacion.WorstFit &&
-        bloque.tamanio > bloqueElegido.tamanio
-      ) {
-        indiceElegido = i;
-      }
+      default:
+        throw new Error(
+          "Politica de asignacion no valida"
+        );
     }
-
-    return indiceElegido;
   }
 
   private fusionarBloquesLibres(): void {
