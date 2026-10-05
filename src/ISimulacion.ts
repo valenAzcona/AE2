@@ -1,6 +1,7 @@
 import type { IProcesoVista } from "./IProcesoVista.js";
 import type { IBloqueMemoria } from "./IBloqueMemoria.js";
 import type { IMetricas } from "./IMetricas.js";
+import type { IEstadoSistema } from "./IEstadoSistema.js";
 import type { PoliticaAsignacion } from "./PoliticaAsignacion.js";
 
 export interface ISimulacion {
@@ -37,4 +38,6 @@ export interface ISimulacion {
   consultarMemoria(): IBloqueMemoria[];
 
   consultarMetricas(): IMetricas;
+
+  consultarEstado(): IEstadoSistema;
 }

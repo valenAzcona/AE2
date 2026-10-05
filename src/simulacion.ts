@@ -3,6 +3,7 @@ import type { IProcesoVista } from "./IProcesoVista.js";
 import type { ISimulacion } from "./ISimulacion.js";
 import type { IBloqueMemoria } from "./IBloqueMemoria.js";
 import type { IMetricas } from "./IMetricas.js";
+import type { IEstadoSistema } from "./IEstadoSistema.js";
 import { EstadoProceso } from "./EstadoProceso.js";
 import { Memoria } from "./Memoria.js";
 import { PoliticaAsignacion } from "./PoliticaAsignacion.js";
@@ -272,6 +273,26 @@ export class Simulacion implements ISimulacion {
       memoriaLibreTotal,
       mayorBloqueLibre,
       fragmentacionExterna,
+    };
+  }
+
+  consultarEstado(): IEstadoSistema {
+    return {
+      tick: this.tick,
+      pidEjecutando:
+        this.planificador.pidEjecutando,
+      colaListos:
+        this.planificador.obtenerColaListos(),
+      colaEsperandoMemoria: [
+        ...this.colaEsperandoMemoria
+      ],
+      colaBloqueados: [
+        ...this.colaBloqueados
+      ],
+      procesosTerminados:
+        this.procesosTerminados,
+      memoria:
+        this.memoria.obtenerBloques(),
     };
   }
 
