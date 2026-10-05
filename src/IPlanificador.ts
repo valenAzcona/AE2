@@ -1,4 +1,4 @@
-import type { Proceso } from "./Proceso.js";
+import type { IProceso } from "./IProceso.js";
 
 export interface IPlanificador {
   readonly quantum: number;
@@ -10,14 +10,14 @@ export interface IPlanificador {
   obtenerColaListos(): number[];
 
   despachar(
-    procesos: Proceso[]
-  ): Proceso | null;
+    procesos: IProceso[]
+  ): IProceso | null;
 
   liberarCpuPorFinalizacion(): void;
 
   liberarCpuPorBloqueo(): void;
 
   procesarFinQuantum(
-    proceso: Proceso
+    proceso: IProceso
   ): void;
 }

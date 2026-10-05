@@ -27,12 +27,6 @@ export interface ISimulacion {
     tiempoTotalCpu: number
   ): void;
 
-  admitirProceso(pid: number): void;
-
-  liberarMemoria(pid: number): void;
-
-  reintentarProcesosEnEspera(): void;
-
   programarEventoES(
     pid: number,
     despuesDeTicksCpu: number,

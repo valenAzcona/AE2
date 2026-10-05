@@ -1,5 +1,5 @@
 import type { IPlanificador } from "./IPlanificador.js";
-import { Proceso } from "./Proceso.js";
+import type { IProceso } from "./IProceso.js";
 
 export class Planificador implements IPlanificador {
   readonly quantum: number;
@@ -41,8 +41,8 @@ export class Planificador implements IPlanificador {
   }
 
   despachar(
-    procesos: Proceso[]
-  ): Proceso | null {
+    procesos: IProceso[]
+  ): IProceso | null {
     if (this._pidEjecutando !== null) {
       const procesoActual = procesos.find(
         (proceso) =>
@@ -85,7 +85,7 @@ export class Planificador implements IPlanificador {
   }
 
   procesarFinQuantum(
-    proceso: Proceso
+    proceso: IProceso
   ): void {
     if (proceso.quantumConsumido < this.quantum) {
       return;

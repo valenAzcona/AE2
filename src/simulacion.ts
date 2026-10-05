@@ -1,4 +1,5 @@
 import { Proceso } from "./Proceso.js";
+import type { IProceso } from "./IProceso.js"
 import type { IProcesoVista } from "./IProcesoVista.js";
 import type { ISimulacion } from "./ISimulacion.js";
 import type { IBloqueMemoria } from "./IBloqueMemoria.js";
@@ -401,7 +402,7 @@ export class Simulacion implements ISimulacion {
   }
 
   private finalizarProceso(
-    proceso: Proceso
+    proceso: IProceso
   ): void {
     proceso.marcarTerminado();
 
@@ -413,7 +414,7 @@ export class Simulacion implements ISimulacion {
   }
 
   private bloquearProceso(
-    proceso: Proceso
+    proceso: IProceso
   ): void {
     proceso.bloquearPorES();
 
