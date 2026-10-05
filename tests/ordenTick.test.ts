@@ -85,73 +85,67 @@ describe("RF06 - Orden del tick e invariantes", () => {
   });
 
   it("no duplica procesos en las colas", () => {
-    const simulacion = new Simulacion(500, 4);
+   const simulacion = new Simulacion(500, 4);
 
-    simulacion.registrarProceso(1, 200, 5);
-    simulacion.registrarProceso(2, 400, 5);
+   simulacion.registrarProceso(1, 200, 5);
+   simulacion.registrarProceso(2, 400, 5);
 
-    simulacion.admitirProceso(1);
-    simulacion.admitirProceso(2);
+   simulacion.avanzarTick();
+   simulacion.avanzarTick();
 
-    simulacion.reintentarProcesosEnEspera();
-    simulacion.reintentarProcesosEnEspera();
+   expect(
+    simulacion.colaEsperandoMemoria
+   ).toEqual([2]);
 
-    expect(
-      simulacion.colaEsperandoMemoria
-    ).toEqual([2]);
+   expect(
+    new Set(simulacion.colaEsperandoMemoria).size
+   ).toBe(
+    simulacion.colaEsperandoMemoria.length
+   );
 
-    expect(
-      new Set(simulacion.colaEsperandoMemoria).size
-    ).toBe(
-      simulacion.colaEsperandoMemoria.length
-    );
-
-    expect(
-      new Set(simulacion.colaListos).size
-    ).toBe(
-      simulacion.colaListos.length
-    );
+   expect(
+    new Set(simulacion.colaListos).size
+   ).toBe(
+    simulacion.colaListos.length
+   );
   });
 
   it("mantiene los bloques de memoria ordenados y sin solapamientos", () => {
-    const simulacion = new Simulacion(500, 4);
+   const simulacion = new Simulacion(500, 1);
 
-    simulacion.registrarProceso(1, 100, 5);
-    simulacion.registrarProceso(2, 200, 5);
-    simulacion.registrarProceso(3, 150, 5);
+   simulacion.registrarProceso(1, 100, 2);
+   simulacion.registrarProceso(2, 200, 1);
+   simulacion.registrarProceso(3, 150, 5);
 
-    simulacion.admitirProceso(1);
-    simulacion.admitirProceso(2);
-    simulacion.admitirProceso(3);
+   simulacion.avanzarTick();
+   simulacion.avanzarTick();
 
-    simulacion.liberarMemoria(2);
+   const bloques = simulacion.consultarMemoria();
 
-    const bloques = simulacion.consultarMemoria();
+   const tamanioTotal = bloques.reduce(
+    (total, bloque) =>
+      total + bloque.tamanio,
+    0
+   );
 
-    const tamanioTotal = bloques.reduce(
-      (total, bloque) =>
-        total + bloque.tamanio,
-      0
-    );
+   expect(tamanioTotal).toBe(500);
 
-    expect(tamanioTotal).toBe(500);
+   expect(bloques[0]?.inicio).toBe(0);
 
-    expect(bloques[0]?.inicio).toBe(0);
-
-    for (let i = 0; i < bloques.length - 1; i++) {
-      const actual = bloques[i]!;
-      const siguiente = bloques[i + 1]!;
-
-      expect(
-        actual.inicio + actual.tamanio
-      ).toBe(siguiente.inicio);
-    }
-
-    const ultimo = bloques[bloques.length - 1]!;
+   for (let i = 0; i < bloques.length - 1; i++) {
+    const actual = bloques[i]!;
+    const siguiente = bloques[i + 1]!;
 
     expect(
-      ultimo.inicio + ultimo.tamanio
-    ).toBe(500);
+      actual.inicio + actual.tamanio
+    ).toBe(siguiente.inicio);
+   }
+
+   const ultimo = bloques[bloques.length - 1]!;
+
+   expect(
+    ultimo.inicio + ultimo.tamanio
+   ).toBe(500);
   });
 
   it("nunca hay mas de un proceso en estado Ejecutando", () => {

@@ -16,61 +16,58 @@ describe("RF09 - Metricas consultables", () => {
   });
 
   it("calcula correctamente la ocupacion de memoria", () => {
-    const simulacion = new Simulacion(1000, 2);
+   const simulacion = new Simulacion(1000, 2);
 
-    simulacion.registrarProceso(1, 400, 10);
-    simulacion.admitirProceso(1);
+   simulacion.registrarProceso(1, 400, 10);
 
-    const metricas = simulacion.consultarMetricas();
+   simulacion.avanzarTick();
 
-    expect(metricas.ocupacionMemoria).toBe(40);
-    expect(metricas.memoriaLibreTotal).toBe(600);
-    expect(metricas.mayorBloqueLibre).toBe(600);
-    expect(metricas.fragmentacionExterna).toBe(0);
+   const metricas = simulacion.consultarMetricas();
+
+   expect(metricas.ocupacionMemoria).toBe(40);
+   expect(metricas.memoriaLibreTotal).toBe(600);
+   expect(metricas.mayorBloqueLibre).toBe(600);
+   expect(metricas.fragmentacionExterna).toBe(0);
   });
-
+  
   it("informa correctamente memoria llena", () => {
-    const simulacion = new Simulacion(400, 2);
+   const simulacion = new Simulacion(400, 2);
 
-    simulacion.registrarProceso(1, 200, 10);
-    simulacion.registrarProceso(2, 200, 10);
+   simulacion.registrarProceso(1, 200, 10);
+   simulacion.registrarProceso(2, 200, 10);
 
-    simulacion.admitirProceso(1);
-    simulacion.admitirProceso(2);
+   simulacion.avanzarTick();
 
-    const metricas = simulacion.consultarMetricas();
+   const metricas = simulacion.consultarMetricas();
 
-    expect(metricas.ocupacionMemoria).toBe(100);
-    expect(metricas.memoriaLibreTotal).toBe(0);
-    expect(metricas.mayorBloqueLibre).toBe(0);
-    expect(metricas.fragmentacionExterna).toBe(0);
+   expect(metricas.ocupacionMemoria).toBe(100);
+   expect(metricas.memoriaLibreTotal).toBe(0);
+   expect(metricas.mayorBloqueLibre).toBe(0);
+   expect(metricas.fragmentacionExterna).toBe(0);
   });
 
   it("calcula 25 por ciento de fragmentacion con huecos de 100 y 300", () => {
-    const simulacion = new Simulacion(1000, 2);
+   const simulacion = new Simulacion(1000, 1);
 
-    simulacion.registrarProceso(1, 100, 10);
-    simulacion.registrarProceso(2, 200, 10);
-    simulacion.registrarProceso(3, 300, 10);
-    simulacion.registrarProceso(4, 400, 10);
+   simulacion.registrarProceso(1, 100, 1);
+   simulacion.registrarProceso(2, 200, 10);
+   simulacion.registrarProceso(3, 300, 1);
+   simulacion.registrarProceso(4, 400, 10);
 
-    simulacion.admitirProceso(1);
-    simulacion.admitirProceso(2);
-    simulacion.admitirProceso(3);
-    simulacion.admitirProceso(4);
+   simulacion.avanzarTick();
+   simulacion.avanzarTick();
+   simulacion.avanzarTick();
 
-    simulacion.liberarMemoria(1);
-    simulacion.liberarMemoria(3);
+   const metricas = simulacion.consultarMetricas();
 
-    const metricas = simulacion.consultarMetricas();
+   expect(metricas.memoriaLibreTotal).toBe(400);
+   expect(metricas.mayorBloqueLibre).toBe(300);
 
-    expect(metricas.memoriaLibreTotal).toBe(400);
-    expect(metricas.mayorBloqueLibre).toBe(300);
-    expect(metricas.fragmentacionExterna).toBeCloseTo(
-      25,
-      5
-    );
+   expect(
+    metricas.fragmentacionExterna
+   ).toBeCloseTo(25, 5);
   });
+
 
   it("calcula la utilizacion acumulada de CPU", () => {
     const simulacion = new Simulacion(1000, 4);

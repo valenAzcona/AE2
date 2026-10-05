@@ -134,7 +134,7 @@ export class Simulacion implements ISimulacion {
     this._colaNuevos.push(pid);
   }
 
-  admitirProceso(pid: number): void {
+  private admitirProceso(pid: number): void {
     const proceso = this.procesos.find(
       (procesoActual) => procesoActual.pid === pid
     );
@@ -181,11 +181,7 @@ export class Simulacion implements ISimulacion {
     this.planificador.encolar(pid);
   }
 
-  liberarMemoria(pid: number): void {
-    this.memoria.liberar(pid);
-  }
-
-  reintentarProcesosEnEspera(): void {
+  private reintentarProcesosEnEspera(): void {
     const procesosEnEspera = [
       ...this._colaEsperandoMemoria
     ];

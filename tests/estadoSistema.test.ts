@@ -90,7 +90,7 @@ describe("RF10 - Consultar estado del sistema", () => {
     const simulacion = new Simulacion(500, 2);
 
     simulacion.registrarProceso(1, 100, 5);
-    simulacion.admitirProceso(1);
+    simulacion.avanzarTick();
 
     const primerEstado =
       simulacion.consultarEstado();
