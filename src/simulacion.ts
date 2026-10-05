@@ -6,6 +6,7 @@ import type { IMetricas } from "./IMetricas.js";
 import { EstadoProceso } from "./EstadoProceso.js";
 import { Memoria } from "./Memoria.js";
 import { PoliticaAsignacion } from "./PoliticaAsignacion.js";
+import { Planificador } from "./Planificador.js";
 
 export class Simulacion implements ISimulacion {
   readonly memoriaTotal: number;
@@ -16,16 +17,14 @@ export class Simulacion implements ISimulacion {
 
   colaNuevos: number[];
   colaEsperandoMemoria: number[];
-  colaListos: number[];
   colaBloqueados: number[];
 
   procesosTerminados: number;
 
   private procesos: Proceso[];
   private memoria: Memoria;
+  private planificador: Planificador;
 
-  private _pidEjecutando: number | null;
-  private _cambiosContexto: number;
   private _ticksConCpuOcupada: number;
 
   constructor(
@@ -56,25 +55,28 @@ export class Simulacion implements ISimulacion {
       politicaAsignacion
     );
 
+    this.planificador = new Planificador(quantum);
+
     this.colaNuevos = [];
     this.colaEsperandoMemoria = [];
-    this.colaListos = [];
     this.colaBloqueados = [];
 
     this.procesosTerminados = 0;
     this.procesos = [];
 
-    this._pidEjecutando = null;
-    this._cambiosContexto = 0;
     this._ticksConCpuOcupada = 0;
   }
 
+  get colaListos(): number[] {
+    return this.planificador.obtenerColaListos();
+  }
+
   get pidEjecutando(): number | null {
-    return this._pidEjecutando;
+    return this.planificador.pidEjecutando;
   }
 
   get cambiosContexto(): number {
-    return this._cambiosContexto;
+    return this.planificador.cambiosContexto;
   }
 
   registrarProceso(
@@ -152,9 +154,7 @@ export class Simulacion implements ISimulacion {
         (pidActual) => pidActual !== pid
       );
 
-    if (!this.colaListos.includes(pid)) {
-      this.colaListos.push(pid);
-    }
+    this.planificador.encolar(pid);
   }
 
   liberarMemoria(pid: number): void {
@@ -268,7 +268,7 @@ export class Simulacion implements ISimulacion {
       ocupacionMemoria,
       utilizacionCPU,
       cambiosContexto:
-        this._cambiosContexto,
+        this.planificador.cambiosContexto,
       memoriaLibreTotal,
       mayorBloqueLibre,
       fragmentacionExterna,
@@ -323,28 +323,15 @@ export class Simulacion implements ISimulacion {
           (pidActual) => pidActual !== pid
         );
 
-      if (!this.colaListos.includes(pid)) {
-        this.colaListos.push(pid);
-      }
+      this.planificador.encolar(pid);
     }
   }
 
   private ejecutarCpu(): void {
-    if (this._pidEjecutando === null) {
-      this.despacharSiguiente();
-    }
-
-    if (this._pidEjecutando === null) {
-      return;
-    }
-
-    const proceso = this.procesos.find(
-      (procesoActual) =>
-        procesoActual.pid === this._pidEjecutando
-    );
+    const proceso =
+      this.planificador.despachar(this.procesos);
 
     if (!proceso) {
-      this._pidEjecutando = null;
       return;
     }
 
@@ -362,66 +349,37 @@ export class Simulacion implements ISimulacion {
       return;
     }
 
-    if (proceso.quantumConsumido >= this.quantum) {
-      this.procesarFinQuantum(proceso);
+    if (
+      proceso.quantumConsumido >=
+      this.planificador.quantum
+    ) {
+      this.planificador.procesarFinQuantum(
+        proceso
+      );
     }
   }
 
-  private despacharSiguiente(): void {
-    const siguientePid = this.colaListos.shift();
-
-    if (siguientePid === undefined) {
-      return;
-    }
-
-    const proceso = this.procesos.find(
-      (procesoActual) =>
-        procesoActual.pid === siguientePid
-    );
-
-    if (!proceso) {
-      return;
-    }
-
-    proceso.reiniciarQuantum();
-    proceso.marcarEjecutando();
-
-    this._pidEjecutando = proceso.pid;
-  }
-
-  private finalizarProceso(proceso: Proceso): void {
+  private finalizarProceso(
+    proceso: Proceso
+  ): void {
     proceso.marcarTerminado();
 
     this.memoria.liberar(proceso.pid);
 
     this.procesosTerminados++;
 
-    this._pidEjecutando = null;
+    this.planificador.liberarCpuPorFinalizacion();
   }
 
-  private bloquearProceso(proceso: Proceso): void {
+  private bloquearProceso(
+    proceso: Proceso
+  ): void {
     proceso.bloquearPorES();
 
     if (!this.colaBloqueados.includes(proceso.pid)) {
       this.colaBloqueados.push(proceso.pid);
     }
 
-    this._pidEjecutando = null;
-    this._cambiosContexto++;
-  }
-
-  private procesarFinQuantum(proceso: Proceso): void {
-    if (this.colaListos.length === 0) {
-      proceso.reiniciarQuantum();
-      return;
-    }
-
-    proceso.marcarListo();
-    proceso.reiniciarQuantum();
-
-    this.colaListos.push(proceso.pid);
-
-    this._pidEjecutando = null;
-    this._cambiosContexto++;
+    this.planificador.liberarCpuPorBloqueo();
   }
 }
