@@ -8,10 +8,18 @@ export interface ISimulacion {
   readonly memoriaTotal: number;
   readonly quantum: number;
   readonly politicaAsignacion: PoliticaAsignacion;
+
+  readonly tick: number;
+
+  readonly colaNuevos: readonly number[];
+  readonly colaEsperandoMemoria: readonly number[];
+  readonly colaListos: readonly number[];
+  readonly colaBloqueados: readonly number[];
+
+  readonly procesosTerminados: number;
+
   readonly pidEjecutando: number | null;
   readonly cambiosContexto: number;
-
-  tick: number;
 
   registrarProceso(
     pid: number,

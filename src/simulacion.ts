@@ -14,13 +14,13 @@ export class Simulacion implements ISimulacion {
   readonly quantum: number;
   readonly politicaAsignacion: PoliticaAsignacion;
 
-  tick: number;
+  private _tick: number;
 
-  colaNuevos: number[];
-  colaEsperandoMemoria: number[];
-  colaBloqueados: number[];
+  private _colaNuevos: number[];
+  private _colaEsperandoMemoria: number[];
+  private _colaBloqueados: number[];
 
-  procesosTerminados: number;
+  private _procesosTerminados: number;
 
   private procesos: Proceso[];
   private memoria: Memoria;
@@ -49,7 +49,7 @@ export class Simulacion implements ISimulacion {
     this.quantum = quantum;
     this.politicaAsignacion = politicaAsignacion;
 
-    this.tick = 0;
+    this._tick = 0;
 
     this.memoria = new Memoria(
       memoriaTotal,
@@ -58,18 +58,38 @@ export class Simulacion implements ISimulacion {
 
     this.planificador = new Planificador(quantum);
 
-    this.colaNuevos = [];
-    this.colaEsperandoMemoria = [];
-    this.colaBloqueados = [];
+    this._colaNuevos = [];
+    this._colaEsperandoMemoria = [];
+    this._colaBloqueados = [];
 
-    this.procesosTerminados = 0;
+    this._procesosTerminados = 0;
     this.procesos = [];
 
     this._ticksConCpuOcupada = 0;
   }
 
-  get colaListos(): number[] {
+  get tick(): number {
+    return this._tick;
+  }
+
+  get colaNuevos(): readonly number[] {
+    return [...this._colaNuevos];
+  }
+
+  get colaEsperandoMemoria(): readonly number[] {
+    return [...this._colaEsperandoMemoria];
+  }
+
+  get colaListos(): readonly number[] {
     return this.planificador.obtenerColaListos();
+  }
+
+  get colaBloqueados(): readonly number[] {
+    return [...this._colaBloqueados];
+  }
+
+  get procesosTerminados(): number {
+    return this._procesosTerminados;
   }
 
   get pidEjecutando(): number | null {
@@ -108,7 +128,7 @@ export class Simulacion implements ISimulacion {
     );
 
     this.procesos.push(proceso);
-    this.colaNuevos.push(pid);
+    this._colaNuevos.push(pid);
   }
 
   admitirProceso(pid: number): void {
@@ -129,7 +149,7 @@ export class Simulacion implements ISimulacion {
       return;
     }
 
-    this.colaNuevos = this.colaNuevos.filter(
+    this._colaNuevos = this._colaNuevos.filter(
       (pidActual) => pidActual !== pid
     );
 
@@ -141,8 +161,8 @@ export class Simulacion implements ISimulacion {
     if (!asignado) {
       proceso.marcarEsperandoMemoria();
 
-      if (!this.colaEsperandoMemoria.includes(pid)) {
-        this.colaEsperandoMemoria.push(pid);
+      if (!this._colaEsperandoMemoria.includes(pid)) {
+        this._colaEsperandoMemoria.push(pid);
       }
 
       return;
@@ -150,8 +170,8 @@ export class Simulacion implements ISimulacion {
 
     proceso.marcarListo();
 
-    this.colaEsperandoMemoria =
-      this.colaEsperandoMemoria.filter(
+    this._colaEsperandoMemoria =
+      this._colaEsperandoMemoria.filter(
         (pidActual) => pidActual !== pid
       );
 
@@ -164,7 +184,7 @@ export class Simulacion implements ISimulacion {
 
   reintentarProcesosEnEspera(): void {
     const procesosEnEspera = [
-      ...this.colaEsperandoMemoria
+      ...this._colaEsperandoMemoria
     ];
 
     for (const pid of procesosEnEspera) {
@@ -201,7 +221,7 @@ export class Simulacion implements ISimulacion {
 
     this.ejecutarCpu();
 
-    this.tick++;
+    this._tick++;
   }
 
   consultarProcesos(): IProcesoVista[] {
@@ -249,11 +269,11 @@ export class Simulacion implements ISimulacion {
       (memoriaOcupada / this.memoriaTotal) * 100;
 
     const utilizacionCPU =
-      this.tick === 0
+      this._tick === 0
         ? 0
         : (
             this._ticksConCpuOcupada /
-            this.tick
+            this._tick
           ) * 100;
 
     const fragmentacionExterna =
@@ -278,26 +298,26 @@ export class Simulacion implements ISimulacion {
 
   consultarEstado(): IEstadoSistema {
     return {
-      tick: this.tick,
+      tick: this._tick,
       pidEjecutando:
         this.planificador.pidEjecutando,
       colaListos:
         this.planificador.obtenerColaListos(),
       colaEsperandoMemoria: [
-        ...this.colaEsperandoMemoria
+        ...this._colaEsperandoMemoria
       ],
       colaBloqueados: [
-        ...this.colaBloqueados
+        ...this._colaBloqueados
       ],
       procesosTerminados:
-        this.procesosTerminados,
+        this._procesosTerminados,
       memoria:
         this.memoria.obtenerBloques(),
     };
   }
 
   private prepararNuevosParaAdmision(): void {
-    const nuevos = [...this.colaNuevos];
+    const nuevos = [...this._colaNuevos];
 
     for (const pid of nuevos) {
       const proceso = this.procesos.find(
@@ -310,16 +330,16 @@ export class Simulacion implements ISimulacion {
 
       proceso.marcarEsperandoMemoria();
 
-      if (!this.colaEsperandoMemoria.includes(pid)) {
-        this.colaEsperandoMemoria.push(pid);
+      if (!this._colaEsperandoMemoria.includes(pid)) {
+        this._colaEsperandoMemoria.push(pid);
       }
     }
 
-    this.colaNuevos = [];
+    this._colaNuevos = [];
   }
 
   private actualizarBloqueados(): void {
-    const bloqueados = [...this.colaBloqueados];
+    const bloqueados = [...this._colaBloqueados];
 
     for (const pid of bloqueados) {
       const proceso = this.procesos.find(
@@ -339,8 +359,8 @@ export class Simulacion implements ISimulacion {
 
       proceso.marcarListo();
 
-      this.colaBloqueados =
-        this.colaBloqueados.filter(
+      this._colaBloqueados =
+        this._colaBloqueados.filter(
           (pidActual) => pidActual !== pid
         );
 
@@ -387,7 +407,7 @@ export class Simulacion implements ISimulacion {
 
     this.memoria.liberar(proceso.pid);
 
-    this.procesosTerminados++;
+    this._procesosTerminados++;
 
     this.planificador.liberarCpuPorFinalizacion();
   }
@@ -397,8 +417,8 @@ export class Simulacion implements ISimulacion {
   ): void {
     proceso.bloquearPorES();
 
-    if (!this.colaBloqueados.includes(proceso.pid)) {
-      this.colaBloqueados.push(proceso.pid);
+    if (!this._colaBloqueados.includes(proceso.pid)) {
+      this._colaBloqueados.push(proceso.pid);
     }
 
     this.planificador.liberarCpuPorBloqueo();
