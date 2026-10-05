@@ -23,7 +23,7 @@ export class Simulacion implements ISimulacion {
   private _colaEsperandoMemoria: number[];
   private _colaBloqueados: number[];
 
-  private _procesosTerminados: number;
+  private _procesosTerminados: number[];
 
   private procesos: IProceso[];
   private memoria: IMemoria;
@@ -65,7 +65,7 @@ export class Simulacion implements ISimulacion {
     this._colaEsperandoMemoria = [];
     this._colaBloqueados = [];
 
-    this._procesosTerminados = 0;
+    this._procesosTerminados = [];
     this.procesos = [];
 
     this._ticksConCpuOcupada = 0;
@@ -91,8 +91,8 @@ export class Simulacion implements ISimulacion {
     return [...this._colaBloqueados];
   }
 
-  get procesosTerminados(): number {
-    return this._procesosTerminados;
+  get procesosTerminados(): ReadonlyArray<number> {
+   return [...this._procesosTerminados];
   }
 
   get pidEjecutando(): number | null {
@@ -296,24 +296,25 @@ export class Simulacion implements ISimulacion {
   }
 
   consultarEstado(): IEstadoSistema {
-    return {
-      tick: this._tick,
-      pidEjecutando:
-        this.planificador.pidEjecutando,
-      colaListos:
-        this.planificador.obtenerColaListos(),
-      colaEsperandoMemoria: [
-        ...this._colaEsperandoMemoria
-      ],
-      colaBloqueados: [
-        ...this._colaBloqueados
-      ],
-      procesosTerminados:
-        this._procesosTerminados,
-      memoria:
-        this.memoria.obtenerBloques(),
-    };
-  }
+  return {
+    tick: this._tick,
+    pidEjecutando:
+      this.planificador.pidEjecutando,
+    colaListos:
+      this.planificador.obtenerColaListos(),
+    colaEsperandoMemoria: [
+      ...this._colaEsperandoMemoria
+    ],
+    colaBloqueados: [
+      ...this._colaBloqueados
+    ],
+    procesosTerminados: [
+      ...this._procesosTerminados
+    ],
+    memoria:
+      this.memoria.obtenerBloques(),
+  };
+}
 
   private prepararNuevosParaAdmision(): void {
     const nuevos = [...this._colaNuevos];
@@ -406,7 +407,7 @@ export class Simulacion implements ISimulacion {
 
     this.memoria.liberar(proceso.pid);
 
-    this._procesosTerminados++;
+    this._procesosTerminados.push(proceso.pid);
 
     this.planificador.liberarCpuPorFinalizacion();
   }

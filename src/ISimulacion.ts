@@ -16,7 +16,7 @@ export interface ISimulacion {
   readonly colaListos: readonly number[];
   readonly colaBloqueados: readonly number[];
 
-  readonly procesosTerminados: number;
+  readonly procesosTerminados: ReadonlyArray< number>;
 
   readonly pidEjecutando: number | null;
   readonly cambiosContexto: number;

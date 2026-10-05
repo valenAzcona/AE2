@@ -18,7 +18,7 @@ describe("RF10 - Consultar estado del sistema", () => {
     expect(estado.colaListos).toEqual([2]);
     expect(estado.colaEsperandoMemoria).toEqual([]);
     expect(estado.colaBloqueados).toEqual([]);
-    expect(estado.procesosTerminados).toBe(0);
+    expect(estado.procesosTerminados).toEqual([]);
     expect(estado.memoria.length).toBeGreaterThan(0);
   });
 
@@ -50,7 +50,7 @@ describe("RF10 - Consultar estado del sistema", () => {
 
     const estado = simulacion.consultarEstado();
 
-    expect(estado.procesosTerminados).toBe(1);
+    expect(estado.procesosTerminados).toEqual([1]);
 
     const proceso1 =
       simulacion.consultarProcesos().find(

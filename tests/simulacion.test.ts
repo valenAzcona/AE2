@@ -28,7 +28,7 @@ describe("RF01 - Configurar e iniciar la simulacion", () => {
     expect(simulacion.colaEsperandoMemoria).toEqual([]);
     expect(simulacion.colaListos).toEqual([]);
     expect(simulacion.colaBloqueados).toEqual([]);
-    expect(simulacion.procesosTerminados).toBe(0);
+    expect(simulacion.procesosTerminados).toEqual([]);
   });
 
   it("rechaza memoria total invalida", () => {

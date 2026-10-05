@@ -8,7 +8,7 @@ export interface IEstadoSistema {
   readonly colaEsperandoMemoria: readonly number[];
   readonly colaBloqueados: readonly number[];
 
-  readonly procesosTerminados: number;
+  readonly procesosTerminados: readonly number[];
 
   readonly memoria: readonly IBloqueMemoria[];
 }
