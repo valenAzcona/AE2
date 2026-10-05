@@ -99,6 +99,8 @@ describe("Ejecucion de procesos", () => {
   it("puede pasar al estado Ejecutando", () => {
     const proceso = new Proceso(1, 128, 5);
 
+    proceso.marcarEsperandoMemoria();
+    proceso.marcarListo();
     proceso.marcarEjecutando();
 
     expect(proceso.estado).toBe(
@@ -109,7 +111,10 @@ describe("Ejecucion de procesos", () => {
   it("ejecutar un tick reduce CPU y aumenta el quantum consumido", () => {
     const proceso = new Proceso(1, 128, 5);
 
+    proceso.marcarEsperandoMemoria();
+    proceso.marcarListo();
     proceso.marcarEjecutando();
+
     proceso.ejecutarTick();
 
     expect(proceso.cpuRestante).toBe(4);
@@ -128,7 +133,10 @@ describe("Ejecucion de procesos", () => {
   it("permite reiniciar el quantum consumido", () => {
     const proceso = new Proceso(1, 128, 5);
 
+    proceso.marcarEsperandoMemoria();
+    proceso.marcarListo();
     proceso.marcarEjecutando();
+
     proceso.ejecutarTick();
     proceso.ejecutarTick();
 
@@ -142,7 +150,10 @@ describe("Ejecucion de procesos", () => {
   it("al terminar reinicia el quantum", () => {
     const proceso = new Proceso(1, 128, 5);
 
+    proceso.marcarEsperandoMemoria();
+    proceso.marcarListo();
     proceso.marcarEjecutando();
+
     proceso.ejecutarTick();
 
     proceso.marcarTerminado();
@@ -152,5 +163,15 @@ describe("Ejecucion de procesos", () => {
     );
 
     expect(proceso.quantumConsumido).toBe(0);
+  });
+  
+  it("rechaza una transicion de estado invalida", () => {
+   const proceso = new Proceso(1, 128, 5);
+
+   expect(() =>
+    proceso.marcarEjecutando()
+   ).toThrow(
+    "Transicion de estado invalida"
+   );
   });
 });

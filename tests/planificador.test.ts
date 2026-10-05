@@ -17,159 +17,171 @@ describe("Planificador - CPU y cola de Listos", () => {
   });
 
   it("despacha procesos respetando el orden FIFO", () => {
-    const planificador = new Planificador(2);
+   const planificador = new Planificador(2);
 
-    const proceso1 = new Proceso(1, 100, 5);
-    const proceso2 = new Proceso(2, 100, 5);
+   const proceso1 = new Proceso(1, 100, 5);
+   const proceso2 = new Proceso(2, 100, 5);
 
-    proceso1.marcarListo();
-    proceso2.marcarListo();
+   proceso1.marcarEsperandoMemoria();
+   proceso1.marcarListo();
 
-    const procesos = [proceso1, proceso2];
+   proceso2.marcarEsperandoMemoria();
+   proceso2.marcarListo();
 
-    planificador.encolar(1);
-    planificador.encolar(2);
+   const procesos = [proceso1, proceso2];
 
-    const despachado =
-      planificador.despachar(procesos);
+   planificador.encolar(1);
+   planificador.encolar(2);
 
-    expect(despachado?.pid).toBe(1);
-
-    expect(despachado?.estado).toBe(
-      EstadoProceso.Ejecutando
-    );
-
-    expect(planificador.pidEjecutando).toBe(1);
-
-    expect(
-      planificador.obtenerColaListos()
-    ).toEqual([2]);
-  });
-
-  it("mantiene el proceso actual si la CPU ya esta ocupada", () => {
-    const planificador = new Planificador(2);
-
-    const proceso1 = new Proceso(1, 100, 5);
-    const proceso2 = new Proceso(2, 100, 5);
-
-    proceso1.marcarListo();
-    proceso2.marcarListo();
-
-    const procesos = [proceso1, proceso2];
-
-    planificador.encolar(1);
-    planificador.encolar(2);
-
+   const despachado =
     planificador.despachar(procesos);
 
-    const segundoDespacho =
-      planificador.despachar(procesos);
+   expect(despachado?.pid).toBe(1);
 
-    expect(segundoDespacho?.pid).toBe(1);
+   expect(despachado?.estado).toBe(
+    EstadoProceso.Ejecutando
+   );
 
-    expect(
-      planificador.obtenerColaListos()
-    ).toEqual([2]);
+   expect(planificador.pidEjecutando).toBe(1);
+
+   expect(
+    planificador.obtenerColaListos()
+   ).toEqual([2]);
+  });
+  
+  it("mantiene el proceso actual si la CPU ya esta ocupada", () => {
+   const planificador = new Planificador(2);
+
+   const proceso1 = new Proceso(1, 100, 5);
+   const proceso2 = new Proceso(2, 100, 5);
+
+   proceso1.marcarEsperandoMemoria();
+   proceso1.marcarListo();
+
+   proceso2.marcarEsperandoMemoria();
+   proceso2.marcarListo();
+
+   const procesos = [proceso1, proceso2];
+
+   planificador.encolar(1);
+   planificador.encolar(2);
+
+   planificador.despachar(procesos);
+
+   const segundoDespacho =
+    planificador.despachar(procesos);
+
+   expect(segundoDespacho?.pid).toBe(1);
+
+   expect(
+    planificador.obtenerColaListos()
+   ).toEqual([2]);
   });
 
   it("al vencer el quantum con otro Listo reencola el proceso", () => {
-    const planificador = new Planificador(2);
+   const planificador = new Planificador(2);
 
-    const proceso1 = new Proceso(1, 100, 5);
-    const proceso2 = new Proceso(2, 100, 5);
+   const proceso1 = new Proceso(1, 100, 5);
+   const proceso2 = new Proceso(2, 100, 5);
 
-    proceso1.marcarListo();
-    proceso2.marcarListo();
+   proceso1.marcarEsperandoMemoria();
+   proceso1.marcarListo();
 
-    const procesos = [proceso1, proceso2];
+   proceso2.marcarEsperandoMemoria();
+   proceso2.marcarListo();
 
-    planificador.encolar(1);
-    planificador.encolar(2);
+   const procesos = [proceso1, proceso2];
 
-    const proceso =
-      planificador.despachar(procesos);
+   planificador.encolar(1);
+   planificador.encolar(2);
 
-    proceso?.ejecutarTick();
-    proceso?.ejecutarTick();
+   const proceso =
+    planificador.despachar(procesos);
 
-    planificador.procesarFinQuantum(
-      proceso!
-    );
+   proceso?.ejecutarTick();
+   proceso?.ejecutarTick();
 
-    expect(proceso?.estado).toBe(
-      EstadoProceso.Listo
-    );
+   planificador.procesarFinQuantum(
+    proceso!
+   );
 
-    expect(proceso?.quantumConsumido).toBe(0);
+   expect(proceso?.estado).toBe(
+    EstadoProceso.Listo
+   );
 
-    expect(
-      planificador.obtenerColaListos()
-    ).toEqual([2, 1]);
+   expect(proceso?.quantumConsumido).toBe(0);
 
-    expect(planificador.pidEjecutando).toBeNull();
+   expect(
+    planificador.obtenerColaListos()
+   ).toEqual([2, 1]);
 
-    expect(planificador.cambiosContexto).toBe(1);
+   expect(planificador.pidEjecutando).toBeNull();
+
+   expect(planificador.cambiosContexto).toBe(1);
   });
-
+ 
   it("renueva el quantum sin cambio de contexto si no hay otros Listos", () => {
-    const planificador = new Planificador(2);
+   const planificador = new Planificador(2);
 
-    const proceso = new Proceso(1, 100, 5);
+   const proceso = new Proceso(1, 100, 5);
 
-    proceso.marcarListo();
+   proceso.marcarEsperandoMemoria();
+   proceso.marcarListo();
 
-    planificador.encolar(1);
+   planificador.encolar(1);
 
-    planificador.despachar([proceso]);
+   planificador.despachar([proceso]);
 
-    proceso.ejecutarTick();
-    proceso.ejecutarTick();
+   proceso.ejecutarTick();
+   proceso.ejecutarTick();
 
-    planificador.procesarFinQuantum(
-      proceso
-    );
+   planificador.procesarFinQuantum(
+    proceso
+   );
 
-    expect(proceso.estado).toBe(
-      EstadoProceso.Ejecutando
-    );
+   expect(proceso.estado).toBe(
+    EstadoProceso.Ejecutando
+   );
 
-    expect(proceso.quantumConsumido).toBe(0);
+   expect(proceso.quantumConsumido).toBe(0);
 
-    expect(planificador.pidEjecutando).toBe(1);
+   expect(planificador.pidEjecutando).toBe(1);
 
-    expect(planificador.cambiosContexto).toBe(0);
+   expect(planificador.cambiosContexto).toBe(0);
   });
-
+  
   it("libera la CPU al finalizar sin sumar cambio de contexto", () => {
-    const planificador = new Planificador(2);
+   const planificador = new Planificador(2);
 
-    const proceso = new Proceso(1, 100, 1);
+   const proceso = new Proceso(1, 100, 1);
 
-    proceso.marcarListo();
+   proceso.marcarEsperandoMemoria();
+   proceso.marcarListo();
 
-    planificador.encolar(1);
-    planificador.despachar([proceso]);
+   planificador.encolar(1);
+   planificador.despachar([proceso]);
 
-    planificador.liberarCpuPorFinalizacion();
+   planificador.liberarCpuPorFinalizacion();
 
-    expect(planificador.pidEjecutando).toBeNull();
-    expect(planificador.cambiosContexto).toBe(0);
+   expect(planificador.pidEjecutando).toBeNull();
+   expect(planificador.cambiosContexto).toBe(0);
   });
 
   it("libera la CPU por bloqueo y suma un cambio de contexto", () => {
-    const planificador = new Planificador(2);
+   const planificador = new Planificador(2);
 
-    const proceso = new Proceso(1, 100, 5);
+   const proceso = new Proceso(1, 100, 5);
 
-    proceso.marcarListo();
+   proceso.marcarEsperandoMemoria();
+   proceso.marcarListo();
 
-    planificador.encolar(1);
-    planificador.despachar([proceso]);
+   planificador.encolar(1);
+   planificador.despachar([proceso]);
 
-    planificador.liberarCpuPorBloqueo();
+   planificador.liberarCpuPorBloqueo();
 
-    expect(planificador.pidEjecutando).toBeNull();
-    expect(planificador.cambiosContexto).toBe(1);
+   expect(planificador.pidEjecutando).toBeNull();
+   expect(planificador.cambiosContexto).toBe(1);
   });
 
   it("devuelve una copia de la cola de Listos", () => {

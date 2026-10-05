@@ -86,50 +86,74 @@ export class Proceso implements IProceso {
     return this._tiempoBloqueoRestante;
   }
 
-  marcarEsperandoMemoria(): void {
-    if (this._estado === EstadoProceso.Terminado) {
-      return;
-    }
-
-    this._estado = EstadoProceso.EsperandoMemoria;
+  private cambiarEstado(
+  nuevoEstado: EstadoProceso,
+  estadosPermitidos: EstadoProceso[]
+): void {
+  if (!estadosPermitidos.includes(this._estado)) {
+    throw new Error(
+      `Transicion de estado invalida: ${this._estado} -> ${nuevoEstado}`
+    );
   }
 
-  marcarListo(): void {
-    if (this._estado === EstadoProceso.Terminado) {
-      return;
-    }
+  this._estado = nuevoEstado;
+}
 
-    this._estado = EstadoProceso.Listo;
+marcarEsperandoMemoria(): void {
+  if (
+    this._estado ===
+    EstadoProceso.EsperandoMemoria
+  ) {
+    return;
   }
 
-  marcarEjecutando(): void {
-    if (this._estado === EstadoProceso.Terminado) {
-      return;
-    }
+  this.cambiarEstado(
+    EstadoProceso.EsperandoMemoria,
+    [EstadoProceso.Nuevo]
+  );
+}
+marcarListo(): void {
+  this.cambiarEstado(
+    EstadoProceso.Listo,
+    [
+      EstadoProceso.EsperandoMemoria,
+      EstadoProceso.Ejecutando,
+      EstadoProceso.Bloqueado,
+    ]
+  );
+}
 
-    this._estado = EstadoProceso.Ejecutando;
+marcarEjecutando(): void {
+  this.cambiarEstado(
+    EstadoProceso.Ejecutando,
+    [EstadoProceso.Listo]
+  );
+}
+
+marcarTerminado(): void {
+  this.cambiarEstado(
+    EstadoProceso.Terminado,
+    [EstadoProceso.Ejecutando]
+  );
+
+  this._quantumConsumido = 0;
+}
+
+ejecutarTick(): void {
+  if (
+    this._estado !== EstadoProceso.Ejecutando ||
+    this._cpuRestante <= 0
+  ) {
+    return;
   }
 
-  marcarTerminado(): void {
-    this._estado = EstadoProceso.Terminado;
-    this._quantumConsumido = 0;
-  }
+  this._cpuRestante--;
+  this._quantumConsumido++;
+}
 
-  ejecutarTick(): void {
-    if (
-      this._estado !== EstadoProceso.Ejecutando ||
-      this._cpuRestante <= 0
-    ) {
-      return;
-    }
-
-    this._cpuRestante--;
-    this._quantumConsumido++;
-  }
-
-  reiniciarQuantum(): void {
-    this._quantumConsumido = 0;
-  }
+reiniciarQuantum(): void {
+  this._quantumConsumido = 0;
+}
 
   programarEventoES(
   despuesDeTicksCpu: number,
