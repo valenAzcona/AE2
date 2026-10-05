@@ -3,6 +3,8 @@ import { BloqueMemoria } from "../src/BloqueMemoria.js";
 import { PrimerAjuste } from "../src/PrimerAjuste.js";
 import { MejorAjuste } from "../src/MejorAjuste.js";
 import { PeorAjuste } from "../src/PeorAjuste.js";
+import { PoliticaAsignacion } from "../src/PoliticaAsignacion.js";
+import { Memoria } from "../src/Memoria.js";
 
 describe("Politicas de asignacion", () => {
   const bloques = [
@@ -91,5 +93,50 @@ describe("Politicas de asignacion", () => {
         150
       )
     ).toBe(0);
+  });
+
+  it("compara First-Fit, Best-Fit y Worst-Fit con el mismo escenario", () => {
+   const crearEscenario = (
+    politica: PoliticaAsignacion
+   ) => {
+    const memoria = new Memoria(1200, politica);
+
+    memoria.asignar(1, 100);
+    memoria.asignar(2, 200);
+    memoria.asignar(3, 100);
+    memoria.asignar(4, 300);
+    memoria.asignar(5, 100);
+    memoria.asignar(6, 150);
+    memoria.asignar(7, 250);
+
+    memoria.liberar(2);
+    memoria.liberar(4);
+    memoria.liberar(6);
+
+    memoria.asignar(8, 140);
+
+    return memoria
+      .obtenerBloques()
+      .find(
+        (bloque) =>
+          bloque.pidProceso === 8
+      )?.inicio;
+   };
+
+   const inicioFirstFit = crearEscenario(
+    PoliticaAsignacion.FirstFit
+   );
+
+   const inicioBestFit = crearEscenario(
+    PoliticaAsignacion.BestFit
+   );
+
+   const inicioWorstFit = crearEscenario(
+    PoliticaAsignacion.WorstFit
+   );
+
+   expect(inicioFirstFit).toBe(100);
+   expect(inicioBestFit).toBe(800);
+   expect(inicioWorstFit).toBe(400);
   });
 });
