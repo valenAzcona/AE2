@@ -42,10 +42,19 @@ Editable:
 ![Secuencia 2](docs/Diagramas/AE2_diagramas_secuencia%202.drawio)
 ![Secuencia 3](docs/Diagramas/AE2_diagramas_secuencia%203.drawio)
 
+-Diagrama de transición de estados:
+Imágen:
+![Diagrama estados](docs/Diagramas/AE2_diagrama_estados.drawio.png)
+Editable:
+![Diagrama estados](docs/Diagramas/AE2_diagrama_estados.drawio)
+
 ## Informe técnico
 
 El informe técnico de la entrega se encuentra en: 
-![Informe](docs/Informe/AE2_Azcona%20Valentina_Paradigmas%20.pdf)
+[Informe Paradigmas](docs/Informe/AE2_Azcona%20Valentina_Paradigmas%20.pdf)
+[Informe Sistemas Operativos](docs/Informe/AE2_Azcona%20Valentina_SO.pdf)
+
+## Commit evaluado: 52a186c
 
 ## Para clonar el repositorio:
 ```bash
