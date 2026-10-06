@@ -1,0 +1,736 @@
+<mxfile host="app.diagrams.net" pages="3">
+  <diagram id="d1" name="Secuencia 1 (RF02, RF03, RF04)">
+    <mxGraphModel dx="1505" dy="2060" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="d130" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=left;" value="Secuencia 1 (RF02, RF03, RF04): registrar, admitir y asignar memoria" vertex="1">
+          <mxGeometry height="30" width="900" x="40" y="-20" as="geometry" />
+        </mxCell>
+        <mxCell id="d131" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value=":Test (cliente)" vertex="1">
+          <mxGeometry height="934" width="100" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d132" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="s:Simulacion" vertex="1">
+          <mxGeometry height="934" width="100" x="240" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d133" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="pl:Planificador" vertex="1">
+          <mxGeometry height="934" width="100" x="600" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d134" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="p:Proceso" vertex="1">
+          <mxGeometry height="934" width="100" x="980" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d135" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="m:Memoria" vertex="1">
+          <mxGeometry height="934" width="100" x="1260" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d136" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value=":BloqueMemoria" vertex="1">
+          <mxGeometry height="934" width="100" x="1680" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d129" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;width=50;height=22;fillColor=none;strokeColor=#666666;fontStyle=1;" value="alt" vertex="1">
+          <mxGeometry height="510" width="1770" x="30" y="428" as="geometry" />
+        </mxCell>
+        <mxCell id="d13" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="registrarProceso(pid, memoriaRequerida, tiempoTotalCpu)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="130" as="sourcePoint" />
+            <mxPoint x="290" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d14" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=open;dashed=1;" value="«create» new Proceso(pid, memoriaRequerida, tiempoTotalCpu)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="170" as="sourcePoint" />
+            <mxPoint x="1030" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d15" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="210" />
+              <mxPoint x="330" y="236" />
+            </Array>
+            <mxPoint x="290" y="210" as="sourcePoint" />
+            <mxPoint x="290" y="236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d16" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="procesos.push(proceso); _colaNuevos.push(pid)" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="d17" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="admitirProceso(pid)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="262" as="sourcePoint" />
+            <mxPoint x="290" y="262" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d18" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="302" />
+              <mxPoint x="330" y="328" />
+            </Array>
+            <mxPoint x="290" y="302" as="sourcePoint" />
+            <mxPoint x="290" y="328" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d19" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="quitar pid de _colaNuevos" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="296" as="geometry" />
+        </mxCell>
+        <mxCell id="d110" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="asignar(pid, memoriaRequerida)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="354" as="sourcePoint" />
+            <mxPoint x="1310" y="354" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d111" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1350" y="394" />
+              <mxPoint x="1350" y="420" />
+            </Array>
+            <mxPoint x="1310" y="394" as="sourcePoint" />
+            <mxPoint x="1310" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d112" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="buscarBloque(tamanio): number  (First/Best/Worst-Fit)" vertex="1">
+          <mxGeometry height="38" width="300" x="1356" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="d113" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;" value="[índice ≠ -1: hay bloque libre suficiente]" vertex="1">
+          <mxGeometry height="20" width="500" x="100" y="434" as="geometry" />
+        </mxCell>
+        <mxCell id="d114" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=open;dashed=1;" value="«create» new BloqueMemoria(inicio, tamanio, false, pid)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1310" y="472" as="sourcePoint" />
+            <mxPoint x="1730" y="472" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d115" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=open;dashed=1;" value="«create» new BloqueMemoria(inicio+tamanio, sobrante, true, null)  [si sobra espacio]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1310" y="512" as="sourcePoint" />
+            <mxPoint x="1730" y="512" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d116" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=open;dashed=1;" value="true">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1310" y="552" as="sourcePoint" />
+            <mxPoint x="290" y="552" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d117" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="marcarListo()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="592" as="sourcePoint" />
+            <mxPoint x="1030" y="592" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d118" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="632" />
+              <mxPoint x="330" y="658" />
+            </Array>
+            <mxPoint x="290" y="632" as="sourcePoint" />
+            <mxPoint x="290" y="658" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d119" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="_colaEsperandoMemoria.filter(≠ pid)" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="626" as="geometry" />
+        </mxCell>
+        <mxCell id="d120" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="encolar(pid)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="684" as="sourcePoint" />
+            <mxPoint x="650" y="684" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d121" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="724" />
+              <mxPoint x="690" y="750" />
+            </Array>
+            <mxPoint x="650" y="724" as="sourcePoint" />
+            <mxPoint x="650" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d122" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="si pid ∉ colaListos: colaListos.push(pid)" vertex="1">
+          <mxGeometry height="38" width="300" x="696" y="718" as="geometry" />
+        </mxCell>
+        <mxCell id="d123" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="30" y="772" as="sourcePoint" />
+            <mxPoint x="1800" y="772" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d124" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;" value="[índice = -1: no hay hueco suficiente, bloques sin cambios]" vertex="1">
+          <mxGeometry height="20" width="500" x="100" y="774" as="geometry" />
+        </mxCell>
+        <mxCell id="d125" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=open;dashed=1;" value="false">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1310" y="812" as="sourcePoint" />
+            <mxPoint x="290" y="812" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d126" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="marcarEsperandoMemoria()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="852" as="sourcePoint" />
+            <mxPoint x="1030" y="852" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d127" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="892" />
+              <mxPoint x="330" y="918" />
+            </Array>
+            <mxPoint x="290" y="892" as="sourcePoint" />
+            <mxPoint x="290" y="918" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d128" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="_colaEsperandoMemoria.push(pid)" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="886" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="d2" name="Secuencia 2 (RF06, RF07)">
+    <mxGraphModel dx="2867" dy="2892" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="d253" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=left;" value="Secuencia 2 (RF06, RF07): un tick de Round Robin" vertex="1">
+          <mxGeometry height="30" width="900" x="40" y="-20" as="geometry" />
+        </mxCell>
+        <mxCell id="d254" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value=":Test (cliente)" vertex="1">
+          <mxGeometry height="1498" width="100" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d255" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="s:Simulacion" vertex="1">
+          <mxGeometry height="1498" width="100" x="240" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d256" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="pl:Planificador" vertex="1">
+          <mxGeometry height="1498" width="100" x="600" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d257" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="p:Proceso" vertex="1">
+          <mxGeometry height="1498" width="100" x="980" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d258" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="m:Memoria" vertex="1">
+          <mxGeometry height="1498" width="100" x="1260" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d250" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;width=50;height=22;fillColor=none;strokeColor=#666666;fontStyle=1;" value="alt" vertex="1">
+          <mxGeometry height="662" width="1350" x="30" y="788" as="geometry" />
+        </mxCell>
+        <mxCell id="d223" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;width=50;height=22;fillColor=none;strokeColor=#666666;fontStyle=1;" value="alt" vertex="1">
+          <mxGeometry height="298" width="1350" x="30" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="d23" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="avanzarTick()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="130" as="sourcePoint" />
+            <mxPoint x="290" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d24" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="170" />
+              <mxPoint x="330" y="196" />
+            </Array>
+            <mxPoint x="290" y="170" as="sourcePoint" />
+            <mxPoint x="290" y="196" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d25" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="1. prepararNuevosParaAdmision()" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="d26" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="222" />
+              <mxPoint x="330" y="248" />
+            </Array>
+            <mxPoint x="290" y="222" as="sourcePoint" />
+            <mxPoint x="290" y="248" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d27" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="1. reintentarProcesosEnEspera() → admitirProceso(pid)  [ver secuencia 1]" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="216" as="geometry" />
+        </mxCell>
+        <mxCell id="d28" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="274" />
+              <mxPoint x="330" y="300" />
+            </Array>
+            <mxPoint x="290" y="274" as="sourcePoint" />
+            <mxPoint x="290" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d29" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="2. actualizarBloqueados()  [ver secuencia 3]" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="268" as="geometry" />
+        </mxCell>
+        <mxCell id="d210" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="326" />
+              <mxPoint x="330" y="352" />
+            </Array>
+            <mxPoint x="290" y="326" as="sourcePoint" />
+            <mxPoint x="290" y="352" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d211" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="3. ejecutarCpu()" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="d212" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="despachar(procesos): Proceso | null">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="378" as="sourcePoint" />
+            <mxPoint x="650" y="378" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d213" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;" value="[pidEjecutando = null y colaListos no vacía]" vertex="1">
+          <mxGeometry height="20" width="500" x="100" y="406" as="geometry" />
+        </mxCell>
+        <mxCell id="d214" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="444" />
+              <mxPoint x="690" y="470" />
+            </Array>
+            <mxPoint x="650" y="444" as="sourcePoint" />
+            <mxPoint x="650" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d215" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="colaListos.shift()" vertex="1">
+          <mxGeometry height="38" width="300" x="696" y="438" as="geometry" />
+        </mxCell>
+        <mxCell id="d216" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="reiniciarQuantum()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="650" y="496" as="sourcePoint" />
+            <mxPoint x="1030" y="496" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d217" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="marcarEjecutando()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="650" y="536" as="sourcePoint" />
+            <mxPoint x="1030" y="536" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d218" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="576" />
+              <mxPoint x="690" y="602" />
+            </Array>
+            <mxPoint x="650" y="576" as="sourcePoint" />
+            <mxPoint x="650" y="602" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d219" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="pidEjecutando = pid" vertex="1">
+          <mxGeometry height="38" width="300" x="696" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="d220" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="30" y="624" as="sourcePoint" />
+            <mxPoint x="1380" y="624" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d221" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;" value="[pidEjecutando ≠ null]  devuelve el proceso actual  (si no hay Listos devuelve null: tick ocioso)" vertex="1">
+          <mxGeometry height="20" width="500" x="100" y="626" as="geometry" />
+        </mxCell>
+        <mxCell id="d222" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=open;dashed=1;" value="proceso">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="650" y="664" as="sourcePoint" />
+            <mxPoint x="290" y="664" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d224" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="714" />
+              <mxPoint x="330" y="740" />
+            </Array>
+            <mxPoint x="290" y="714" as="sourcePoint" />
+            <mxPoint x="290" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d225" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="_ticksConCpuOcupada++" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="708" as="geometry" />
+        </mxCell>
+        <mxCell id="d226" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="ejecutarTick()   (cpuRestante--, quantumConsumido++)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="766" as="sourcePoint" />
+            <mxPoint x="1030" y="766" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d227" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;" value="[cpuRestante = 0]  (la finalización tiene prioridad)" vertex="1">
+          <mxGeometry height="20" width="500" x="100" y="794" as="geometry" />
+        </mxCell>
+        <mxCell id="d228" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="832" />
+              <mxPoint x="330" y="858" />
+            </Array>
+            <mxPoint x="290" y="832" as="sourcePoint" />
+            <mxPoint x="290" y="858" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d229" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="finalizarProceso(proceso)" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="826" as="geometry" />
+        </mxCell>
+        <mxCell id="d230" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="marcarTerminado()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="884" as="sourcePoint" />
+            <mxPoint x="1030" y="884" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d231" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="liberar(pid)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="924" as="sourcePoint" />
+            <mxPoint x="1310" y="924" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d232" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1350" y="964" />
+              <mxPoint x="1350" y="990" />
+            </Array>
+            <mxPoint x="1310" y="964" as="sourcePoint" />
+            <mxPoint x="1310" y="990" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d233" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="fusionarBloquesLibres()  (coalescencia)" vertex="1">
+          <mxGeometry height="38" width="300" x="1356" y="958" as="geometry" />
+        </mxCell>
+        <mxCell id="d234" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="1016" />
+              <mxPoint x="330" y="1042" />
+            </Array>
+            <mxPoint x="290" y="1016" as="sourcePoint" />
+            <mxPoint x="290" y="1042" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d235" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="_procesosTerminados++" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="1010" as="geometry" />
+        </mxCell>
+        <mxCell id="d236" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="liberarCpuPorFinalizacion()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="1068" as="sourcePoint" />
+            <mxPoint x="650" y="1068" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d237" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="1108" />
+              <mxPoint x="690" y="1134" />
+            </Array>
+            <mxPoint x="650" y="1108" as="sourcePoint" />
+            <mxPoint x="650" y="1134" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d238" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="pidEjecutando = null" vertex="1">
+          <mxGeometry height="38" width="300" x="696" y="1102" as="geometry" />
+        </mxCell>
+        <mxCell id="d239" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="30" y="1156" as="sourcePoint" />
+            <mxPoint x="1380" y="1156" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d240" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;" value="[debeBloquearsePorES() = true]  (el bloqueo tiene prioridad sobre el quantum)" vertex="1">
+          <mxGeometry height="20" width="500" x="100" y="1158" as="geometry" />
+        </mxCell>
+        <mxCell id="d241" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="1196" />
+              <mxPoint x="330" y="1222" />
+            </Array>
+            <mxPoint x="290" y="1196" as="sourcePoint" />
+            <mxPoint x="290" y="1222" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d242" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="bloquearProceso(proceso)  [ver secuencia 3]" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="1190" as="geometry" />
+        </mxCell>
+        <mxCell id="d243" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="30" y="1244" as="sourcePoint" />
+            <mxPoint x="1380" y="1244" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d244" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;" value="[quantumConsumido ≥ quantum]" vertex="1">
+          <mxGeometry height="20" width="500" x="100" y="1246" as="geometry" />
+        </mxCell>
+        <mxCell id="d245" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="procesarFinQuantum(proceso)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="1284" as="sourcePoint" />
+            <mxPoint x="650" y="1284" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d246" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="reiniciarQuantum()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="650" y="1324" as="sourcePoint" />
+            <mxPoint x="1030" y="1324" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d247" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="[hay otros Listos] marcarListo()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="650" y="1364" as="sourcePoint" />
+            <mxPoint x="1030" y="1364" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d248" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="1404" />
+              <mxPoint x="690" y="1430" />
+            </Array>
+            <mxPoint x="650" y="1404" as="sourcePoint" />
+            <mxPoint x="650" y="1430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d249" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="[hay otros Listos] encolar(pid); pidEjecutando = null; cambiosContexto++" vertex="1">
+          <mxGeometry height="38" width="300" x="696" y="1398" as="geometry" />
+        </mxCell>
+        <mxCell id="d251" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="1466" />
+              <mxPoint x="330" y="1492" />
+            </Array>
+            <mxPoint x="290" y="1466" as="sourcePoint" />
+            <mxPoint x="290" y="1492" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d252" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="4. _tick++" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="1460" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="d3" name="Secuencia 3 (RF08, RF09)">
+    <mxGraphModel dx="1613" dy="2459" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="d337" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=left;" value="Secuencia 3 (RF08, RF09): bloqueo por E/S y retorno a Listos" vertex="1">
+          <mxGeometry height="30" width="900" x="40" y="-20" as="geometry" />
+        </mxCell>
+        <mxCell id="d338" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value=":Test (cliente)" vertex="1">
+          <mxGeometry height="1134" width="100" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d339" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="s:Simulacion" vertex="1">
+          <mxGeometry height="1134" width="100" x="240" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d340" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="pl:Planificador" vertex="1">
+          <mxGeometry height="1134" width="100" x="600" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d341" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="p:Proceso" vertex="1">
+          <mxGeometry height="1134" width="100" x="980" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d334" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;width=50;height=22;fillColor=none;strokeColor=#666666;fontStyle=1;" value="alt" vertex="1">
+          <mxGeometry height="170" width="1070" x="30" y="916" as="geometry" />
+        </mxCell>
+        <mxCell id="d33" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="programarEventoES(pid, despuesDeTicksCpu, duracion)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="130" as="sourcePoint" />
+            <mxPoint x="290" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d34" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="programarEventoES(despuesDeTicksCpu, duracion)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="170" as="sourcePoint" />
+            <mxPoint x="1030" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d35" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="210" />
+              <mxPoint x="1070" y="236" />
+            </Array>
+            <mxPoint x="1030" y="210" as="sourcePoint" />
+            <mxPoint x="1030" y="236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d36" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="valida enteros &gt; 0 y despuesDeTicksCpu &lt; tiempoTotalCpu (si no, lanza Error)" vertex="1">
+          <mxGeometry height="38" width="300" x="1076" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="d37" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="avanzarTick()   [tick en que el proceso alcanza el evento]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="262" as="sourcePoint" />
+            <mxPoint x="290" y="262" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d38" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="302" />
+              <mxPoint x="330" y="328" />
+            </Array>
+            <mxPoint x="290" y="302" as="sourcePoint" />
+            <mxPoint x="290" y="328" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d39" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="ejecutarCpu()  [ver secuencia 2]" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="296" as="geometry" />
+        </mxCell>
+        <mxCell id="d310" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="ejecutarTick()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="354" as="sourcePoint" />
+            <mxPoint x="1030" y="354" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d311" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="debeBloquearsePorES()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="394" as="sourcePoint" />
+            <mxPoint x="1030" y="394" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d312" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=open;dashed=1;" value="true">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1030" y="434" as="sourcePoint" />
+            <mxPoint x="290" y="434" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d313" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="474" />
+              <mxPoint x="330" y="500" />
+            </Array>
+            <mxPoint x="290" y="474" as="sourcePoint" />
+            <mxPoint x="290" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d314" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="bloquearProceso(proceso)" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="468" as="geometry" />
+        </mxCell>
+        <mxCell id="d315" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="bloquearPorES()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="526" as="sourcePoint" />
+            <mxPoint x="1030" y="526" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d316" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="566" />
+              <mxPoint x="1070" y="592" />
+            </Array>
+            <mxPoint x="1030" y="566" as="sourcePoint" />
+            <mxPoint x="1030" y="592" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d317" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="estado = Bloqueado; tiempoBloqueoRestante = duracion; quantumConsumido = 0" vertex="1">
+          <mxGeometry height="38" width="300" x="1076" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="d318" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="618" />
+              <mxPoint x="330" y="644" />
+            </Array>
+            <mxPoint x="290" y="618" as="sourcePoint" />
+            <mxPoint x="290" y="644" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d319" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="_colaBloqueados.push(pid)" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="612" as="geometry" />
+        </mxCell>
+        <mxCell id="d320" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="liberarCpuPorBloqueo()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="670" as="sourcePoint" />
+            <mxPoint x="650" y="670" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d321" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="710" />
+              <mxPoint x="690" y="736" />
+            </Array>
+            <mxPoint x="650" y="710" as="sourcePoint" />
+            <mxPoint x="650" y="736" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d322" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="pidEjecutando = null; cambiosContexto++" vertex="1">
+          <mxGeometry height="38" width="300" x="696" y="704" as="geometry" />
+        </mxCell>
+        <mxCell id="d323" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;size=12;" value="La memoria NO se libera: el proceso bloqueado conserva su BloqueMemoria." vertex="1">
+          <mxGeometry height="50" width="330" x="1060" y="592" as="geometry" />
+        </mxCell>
+        <mxCell id="d324" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="avanzarTick()   [ticks siguientes]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="762" as="sourcePoint" />
+            <mxPoint x="290" y="762" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d325" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="802" />
+              <mxPoint x="330" y="828" />
+            </Array>
+            <mxPoint x="290" y="802" as="sourcePoint" />
+            <mxPoint x="290" y="828" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d326" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="actualizarBloqueados()" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="796" as="geometry" />
+        </mxCell>
+        <mxCell id="d327" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="actualizarBloqueo()   (tiempoBloqueoRestante--)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="854" as="sourcePoint" />
+            <mxPoint x="1030" y="854" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d328" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=open;dashed=1;" value="finalizoBloqueo: boolean">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1030" y="894" as="sourcePoint" />
+            <mxPoint x="290" y="894" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d329" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;" value="[finalizoBloqueo = true]" vertex="1">
+          <mxGeometry height="20" width="500" x="100" y="922" as="geometry" />
+        </mxCell>
+        <mxCell id="d330" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="marcarListo()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="960" as="sourcePoint" />
+            <mxPoint x="1030" y="960" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d331" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="1000" />
+              <mxPoint x="330" y="1026" />
+            </Array>
+            <mxPoint x="290" y="1000" as="sourcePoint" />
+            <mxPoint x="290" y="1026" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d332" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="_colaBloqueados.filter(≠ pid)" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="994" as="geometry" />
+        </mxCell>
+        <mxCell id="d333" edge="1" parent="1" style="html=1;verticalAlign=bottom;labelBackgroundColor=#ffffff;endArrow=block;" value="encolar(pid)   (al final de la cola de Listos)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="1052" as="sourcePoint" />
+            <mxPoint x="650" y="1052" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d335" edge="1" parent="1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="1102" />
+              <mxPoint x="330" y="1128" />
+            </Array>
+            <mxPoint x="290" y="1102" as="sourcePoint" />
+            <mxPoint x="290" y="1128" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d336" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;" value="ejecutarCpu() → despachar()  (puede ejecutar en ese mismo tick)" vertex="1">
+          <mxGeometry height="38" width="300" x="336" y="1096" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

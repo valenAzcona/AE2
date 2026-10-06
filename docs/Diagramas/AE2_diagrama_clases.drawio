@@ -1,0 +1,205 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="ae2" name="Diagrama de clases">
+    <mxGraphModel dx="2774" dy="1668" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="2400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c3" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;IPlanificador&lt;/b&gt;" vertex="1">
+          <mxGeometry height="199" width="320" x="440" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" parent="c3" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ quantum: number {readOnly}&lt;br&gt;+ pidEjecutando: number | null {readOnly}&lt;br&gt;+ cambiosContexto: number {readOnly}" vertex="1">
+          <mxGeometry height="53" width="320" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" parent="c3" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="320" y="93" as="geometry" />
+        </mxCell>
+        <mxCell id="c6" parent="c3" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ encolar(pid: number): void&lt;br&gt;+ obtenerColaListos(): number[]&lt;br&gt;+ despachar(procesos: Proceso[]): Proceso | null&lt;br&gt;+ liberarCpuPorFinalizacion(): void&lt;br&gt;+ liberarCpuPorBloqueo(): void&lt;br&gt;+ procesarFinQuantum(proceso: Proceso): void" vertex="1">
+          <mxGeometry height="98" width="320" y="101" as="geometry" />
+        </mxCell>
+        <mxCell id="c7" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;ISimulacion&lt;/b&gt;" vertex="1">
+          <mxGeometry height="379" width="360" x="860" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c8" parent="c7" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ memoriaTotal: number {readOnly}&lt;br&gt;+ quantum: number {readOnly}&lt;br&gt;+ politicaAsignacion: PoliticaAsignacion {readOnly}&lt;br&gt;+ tick: number {readOnly}&lt;br&gt;+ colaNuevos: readonly number[] {readOnly}&lt;br&gt;+ colaEsperandoMemoria: readonly number[] {readOnly}&lt;br&gt;+ colaListos: readonly number[] {readOnly}&lt;br&gt;+ colaBloqueados: readonly number[] {readOnly}&lt;br&gt;+ procesosTerminados: number {readOnly}&lt;br&gt;+ pidEjecutando: number | null {readOnly}&lt;br&gt;+ cambiosContexto: number {readOnly}" vertex="1">
+          <mxGeometry height="173" width="360" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c9" parent="c7" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="360" y="213" as="geometry" />
+        </mxCell>
+        <mxCell id="c10" parent="c7" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ registrarProceso(pid, memoriaRequerida, tiempoTotalCpu): void&lt;br&gt;+ admitirProceso(pid: number): void&lt;br&gt;+ liberarMemoria(pid: number): void&lt;br&gt;+ reintentarProcesosEnEspera(): void&lt;br&gt;+ programarEventoES(pid, despuesDeTicksCpu, duracion): void&lt;br&gt;+ avanzarTick(): void&lt;br&gt;+ consultarProcesos(): IProcesoVista[]&lt;br&gt;+ consultarMemoria(): IBloqueMemoria[]&lt;br&gt;+ consultarMetricas(): IMetricas&lt;br&gt;+ consultarEstado(): IEstadoSistema" vertex="1">
+          <mxGeometry height="158" width="360" y="221" as="geometry" />
+        </mxCell>
+        <mxCell id="c11" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;IMemoria&lt;/b&gt;" vertex="1">
+          <mxGeometry height="124" width="320" x="1300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c12" parent="c11" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ tamanioTotal: number {readOnly}" vertex="1">
+          <mxGeometry height="23" width="320" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c13" parent="c11" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="320" y="63" as="geometry" />
+        </mxCell>
+        <mxCell id="c14" parent="c11" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ obtenerBloques(): IBloqueMemoria[]&lt;br&gt;+ asignar(pid: number, tamanio: number): boolean&lt;br&gt;+ liberar(pid: number): void" vertex="1">
+          <mxGeometry height="53" width="320" y="71" as="geometry" />
+        </mxCell>
+        <mxCell id="c15" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;IBloqueMemoria&lt;/b&gt;" vertex="1">
+          <mxGeometry height="139" width="280" x="1680" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c16" parent="c15" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ inicio: number {readOnly}&lt;br&gt;+ tamanio: number {readOnly}&lt;br&gt;+ libre: boolean {readOnly}&lt;br&gt;+ pidProceso: number | null {readOnly}" vertex="1">
+          <mxGeometry height="68" width="280" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c17" parent="c15" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="c18" parent="c15" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ obtenerFin(): number" vertex="1">
+          <mxGeometry height="23" width="280" y="116" as="geometry" />
+        </mxCell>
+        <mxCell id="c19" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Planificador&lt;/b&gt;" vertex="1">
+          <mxGeometry height="245" width="320" x="440" y="509" as="geometry" />
+        </mxCell>
+        <mxCell id="c20" parent="c19" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ quantum: number {readOnly}&lt;br&gt;- colaListos: number[]&lt;br&gt;- _pidEjecutando: number | null&lt;br&gt;- _cambiosContexto: number" vertex="1">
+          <mxGeometry height="68" width="320" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c21" parent="c19" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="320" y="94" as="geometry" />
+        </mxCell>
+        <mxCell id="c22" parent="c19" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ constructor(quantum: number)&lt;br&gt;+ get pidEjecutando(): number | null&lt;br&gt;+ get cambiosContexto(): number&lt;br&gt;+ encolar(pid: number): void&lt;br&gt;+ obtenerColaListos(): number[]&lt;br&gt;+ despachar(procesos: Proceso[]): Proceso | null&lt;br&gt;+ liberarCpuPorFinalizacion(): void&lt;br&gt;+ liberarCpuPorBloqueo(): void&lt;br&gt;+ procesarFinQuantum(proceso: Proceso): void" vertex="1">
+          <mxGeometry height="143" width="320" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="c23" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Simulacion&lt;/b&gt;" vertex="1">
+          <mxGeometry height="515" width="360" x="860" y="509" as="geometry" />
+        </mxCell>
+        <mxCell id="c24" parent="c23" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ memoriaTotal: number {readOnly}&lt;br&gt;+ quantum: number {readOnly}&lt;br&gt;+ politicaAsignacion: PoliticaAsignacion {readOnly}&lt;br&gt;- _tick: number&lt;br&gt;- _colaNuevos: number[]&lt;br&gt;- _colaEsperandoMemoria: number[]&lt;br&gt;- _colaBloqueados: number[]&lt;br&gt;- _procesosTerminados: number&lt;br&gt;- procesos: Proceso[]&lt;br&gt;- memoria: Memoria&lt;br&gt;- planificador: Planificador&lt;br&gt;- _ticksConCpuOcupada: number" vertex="1">
+          <mxGeometry height="188" width="360" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c25" parent="c23" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="360" y="214" as="geometry" />
+        </mxCell>
+        <mxCell id="c26" parent="c23" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ constructor(memoriaTotal, quantum, politicaAsignacion)&lt;br&gt;+ get tick(), colaNuevos(), colaEsperandoMemoria()&lt;br&gt;+ get colaListos(), colaBloqueados()&lt;br&gt;+ get procesosTerminados(), pidEjecutando(), cambiosContexto()&lt;br&gt;+ registrarProceso(pid, memoriaRequerida, tiempoTotalCpu): void&lt;br&gt;+ admitirProceso(pid: number): void&lt;br&gt;+ liberarMemoria(pid: number): void&lt;br&gt;+ reintentarProcesosEnEspera(): void&lt;br&gt;+ programarEventoES(pid, despuesDeTicksCpu, duracion): void&lt;br&gt;+ avanzarTick(): void&lt;br&gt;+ consultarProcesos(): IProcesoVista[]&lt;br&gt;+ consultarMemoria(): IBloqueMemoria[]&lt;br&gt;+ consultarMetricas(): IMetricas&lt;br&gt;+ consultarEstado(): IEstadoSistema&lt;br&gt;- prepararNuevosParaAdmision(): void&lt;br&gt;- actualizarBloqueados(): void&lt;br&gt;- ejecutarCpu(): void&lt;br&gt;- finalizarProceso(proceso: Proceso): void&lt;br&gt;- bloquearProceso(proceso: Proceso): void" vertex="1">
+          <mxGeometry height="293" width="360" y="222" as="geometry" />
+        </mxCell>
+        <mxCell id="c27" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Memoria&lt;/b&gt;" vertex="1">
+          <mxGeometry height="185" width="320" x="1300" y="509" as="geometry" />
+        </mxCell>
+        <mxCell id="c28" parent="c27" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ tamanioTotal: number {readOnly}&lt;br&gt;+ politicaAsignacion: PoliticaAsignacion {readOnly}&lt;br&gt;- bloques: BloqueMemoria[]" vertex="1">
+          <mxGeometry height="53" width="320" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c29" parent="c27" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="320" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="c30" parent="c27" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ constructor(tamanioTotal, politicaAsignacion)&lt;br&gt;+ obtenerBloques(): IBloqueMemoria[]&lt;br&gt;+ asignar(pid: number, tamanio: number): boolean&lt;br&gt;+ liberar(pid: number): void&lt;br&gt;- buscarBloque(tamanio: number): number&lt;br&gt;- fusionarBloquesLibres(): void" vertex="1">
+          <mxGeometry height="98" width="320" y="87" as="geometry" />
+        </mxCell>
+        <mxCell id="c31" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;BloqueMemoria&lt;/b&gt;" vertex="1">
+          <mxGeometry height="155" width="280" x="1680" y="509" as="geometry" />
+        </mxCell>
+        <mxCell id="c32" parent="c31" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="- _inicio: number&lt;br&gt;- _tamanio: number&lt;br&gt;- _libre: boolean&lt;br&gt;- _pidProceso: number | null" vertex="1">
+          <mxGeometry height="68" width="280" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c33" parent="c31" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="94" as="geometry" />
+        </mxCell>
+        <mxCell id="c34" parent="c31" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ constructor(inicio, tamanio, libre, pidProceso)&lt;br&gt;+ get inicio(), tamanio(), libre(), pidProceso()&lt;br&gt;+ obtenerFin(): number" vertex="1">
+          <mxGeometry height="53" width="280" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="c35" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Proceso&lt;/b&gt;" vertex="1">
+          <mxGeometry height="425" width="320" x="440" y="844" as="geometry" />
+        </mxCell>
+        <mxCell id="c36" parent="c35" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="- _pid: number {readOnly}&lt;br&gt;- _memoriaRequerida: number {readOnly}&lt;br&gt;- _tiempoTotalCpu: number {readOnly}&lt;br&gt;- _cpuRestante: number&lt;br&gt;- _estado: EstadoProceso&lt;br&gt;- _quantumConsumido: number&lt;br&gt;- _tiempoBloqueoRestante: number&lt;br&gt;- _eventoESDespuesDe: number | null&lt;br&gt;- _duracionEventoES: number | null&lt;br&gt;- _eventoESDisparado: boolean" vertex="1">
+          <mxGeometry height="158" width="320" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c37" parent="c35" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="320" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="c38" parent="c35" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ constructor(pid, memoriaRequerida, tiempoTotalCpu)&lt;br&gt;+ get pid(), memoriaRequerida(), tiempoTotalCpu()&lt;br&gt;+ get cpuRestante(), estado(), quantumConsumido()&lt;br&gt;+ get tiempoBloqueoRestante()&lt;br&gt;+ marcarEsperandoMemoria(): void&lt;br&gt;+ marcarListo(): void&lt;br&gt;+ marcarEjecutando(): void&lt;br&gt;+ marcarTerminado(): void&lt;br&gt;+ ejecutarTick(): void&lt;br&gt;+ reiniciarQuantum(): void&lt;br&gt;+ programarEventoES(despuesDeTicksCpu, duracion): void&lt;br&gt;+ debeBloquearsePorES(): boolean&lt;br&gt;+ bloquearPorES(): void&lt;br&gt;+ actualizarBloqueo(): boolean&lt;br&gt;+ obtenerResumen(): string" vertex="1">
+          <mxGeometry height="233" width="320" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="c39" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;IProceso&lt;/b&gt;" vertex="1">
+          <mxGeometry height="334" width="320" x="440" y="1359" as="geometry" />
+        </mxCell>
+        <mxCell id="c40" parent="c39" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ pid: number {readOnly}&lt;br&gt;+ memoriaRequerida: number {readOnly}&lt;br&gt;+ tiempoTotalCpu: number {readOnly}&lt;br&gt;+ cpuRestante: number {readOnly}&lt;br&gt;+ estado: EstadoProceso {readOnly}&lt;br&gt;+ quantumConsumido: number {readOnly}&lt;br&gt;+ tiempoBloqueoRestante: number {readOnly}" vertex="1">
+          <mxGeometry height="113" width="320" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c41" parent="c39" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="320" y="153" as="geometry" />
+        </mxCell>
+        <mxCell id="c42" parent="c39" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ marcarEsperandoMemoria(): void&lt;br&gt;+ marcarListo(): void&lt;br&gt;+ marcarEjecutando(): void&lt;br&gt;+ marcarTerminado(): void&lt;br&gt;+ ejecutarTick(): void&lt;br&gt;+ reiniciarQuantum(): void&lt;br&gt;+ programarEventoES(despuesDeTicksCpu, duracion): void&lt;br&gt;+ debeBloquearsePorES(): boolean&lt;br&gt;+ bloquearPorES(): void&lt;br&gt;+ actualizarBloqueo(): boolean&lt;br&gt;+ obtenerResumen(): string" vertex="1">
+          <mxGeometry height="173" width="320" y="161" as="geometry" />
+        </mxCell>
+        <mxCell id="c43" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;&lt;enumeration&gt;&gt;&lt;br&gt;&lt;b&gt;EstadoProceso&lt;/b&gt;" vertex="1">
+          <mxGeometry height="138" width="240" x="40" y="844" as="geometry" />
+        </mxCell>
+        <mxCell id="c44" parent="c43" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="Nuevo&lt;br&gt;EsperandoMemoria&lt;br&gt;Listo&lt;br&gt;Ejecutando&lt;br&gt;Bloqueado&lt;br&gt;Terminado" vertex="1">
+          <mxGeometry height="98" width="240" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c45" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;&lt;enumeration&gt;&gt;&lt;br&gt;&lt;b&gt;PoliticaAsignacion&lt;/b&gt;" vertex="1">
+          <mxGeometry height="93" width="240" x="1300" y="784" as="geometry" />
+        </mxCell>
+        <mxCell id="c46" parent="c45" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="FirstFit&lt;br&gt;BestFit&lt;br&gt;WorstFit" vertex="1">
+          <mxGeometry height="53" width="240" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c47" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;IProcesoVista&lt;/b&gt;" vertex="1">
+          <mxGeometry height="153" width="300" x="860" y="1114" as="geometry" />
+        </mxCell>
+        <mxCell id="c48" parent="c47" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ pid: number {readOnly}&lt;br&gt;+ memoriaRequerida: number {readOnly}&lt;br&gt;+ tiempoTotalCpu: number {readOnly}&lt;br&gt;+ cpuRestante: number {readOnly}&lt;br&gt;+ estado: EstadoProceso {readOnly}&lt;br&gt;+ quantumConsumido: number {readOnly}&lt;br&gt;+ tiempoBloqueoRestante: number {readOnly}" vertex="1">
+          <mxGeometry height="113" width="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c49" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;IMetricas&lt;/b&gt;" vertex="1">
+          <mxGeometry height="138" width="300" x="1300" y="1114" as="geometry" />
+        </mxCell>
+        <mxCell id="c50" parent="c49" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ ocupacionMemoria: number {readOnly}&lt;br&gt;+ utilizacionCPU: number {readOnly}&lt;br&gt;+ cambiosContexto: number {readOnly}&lt;br&gt;+ memoriaLibreTotal: number {readOnly}&lt;br&gt;+ mayorBloqueLibre: number {readOnly}&lt;br&gt;+ fragmentacionExterna: number {readOnly}" vertex="1">
+          <mxGeometry height="98" width="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c51" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;&lt;interface&gt;&gt;&lt;br&gt;&lt;b&gt;IEstadoSistema&lt;/b&gt;" vertex="1">
+          <mxGeometry height="153" width="300" x="1680" y="1114" as="geometry" />
+        </mxCell>
+        <mxCell id="c52" parent="c51" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;fontSize=11;" value="+ tick: number {readOnly}&lt;br&gt;+ pidEjecutando: number | null {readOnly}&lt;br&gt;+ colaListos: readonly number[] {readOnly}&lt;br&gt;+ colaEsperandoMemoria: readonly number[] {readOnly}&lt;br&gt;+ colaBloqueados: readonly number[] {readOnly}&lt;br&gt;+ procesosTerminados: number {readOnly}&lt;br&gt;+ memoria: readonly IBloqueMemoria[] {readOnly}" vertex="1">
+          <mxGeometry height="113" width="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c53" edge="1" parent="1" source="c35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;" target="c39" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c54" edge="1" parent="1" source="c23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;" target="c7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c55" edge="1" parent="1" source="c27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;" target="c11" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c56" edge="1" parent="1" source="c31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;" target="c15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c57" edge="1" parent="1" source="c19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;" target="c3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c58" edge="1" parent="1" source="c23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=diamondThin;startFill=1;endArrow=none;" target="c19" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c59" edge="1" parent="1" source="c23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=diamondThin;startFill=1;endArrow=none;" target="c27" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c60" edge="1" parent="1" source="c23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=diamondThin;startFill=1;endArrow=none;" target="c35" value="0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c61" edge="1" parent="1" source="c27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=diamondThin;startFill=1;endArrow=none;" target="c31" value="1..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c62" edge="1" parent="1" source="c19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;" target="c35" value="usa">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c63" edge="1" parent="1" source="c35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;" target="c43" value="usa">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c64" edge="1" parent="1" source="c27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;" target="c45" value="usa">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c65" edge="1" parent="1" source="c23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;" target="c47" value="retorna">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c66" edge="1" parent="1" source="c23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;" target="c49" value="retorna">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c67" edge="1" parent="1" source="c23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;" target="c51" value="retorna">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
